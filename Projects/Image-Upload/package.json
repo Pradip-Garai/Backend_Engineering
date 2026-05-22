@@ -1,0 +1,32 @@
+{
+  "name": "image-upload",
+  "version": "1.0.0",
+  "description": "Upload Image Using Node Server",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "N/A",
+    "start":"node server.js",
+    "dev":"nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/N/A.git"
+  },
+  "keywords": [
+    "Node.js",
+    "Express.js",
+    "Multer"
+  ],
+  "author": "Pradip Garai",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/N/A/issues"
+  },
+  "homepage": "https://github.com/N/A#readme",
+  "dependencies": {
+    "ejs": "^5.0.2",
+    "express": "^5.2.1",
+    "multer": "^2.1.1"
+  }
+}

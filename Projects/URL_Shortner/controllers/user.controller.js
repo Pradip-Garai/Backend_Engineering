@@ -40,15 +40,14 @@ export const Register = async (req,res)=>{
             process.env.JWT_SECRET,
             {expiresIn:'1d'}
         );
-
+        
+        // store token in cookie
         res.cookie("token", token, {
-            httpOnly:true,
-            secure:false,
-            maxAge:24 * 60 * 60 * 1000
+            httpOnly:true
         });
 
-        res.redirect('/');
-
+        // redirect
+        return res.redirect("/");
 
     }catch(err){
         console.log(`Error from User Registration : ${err}`);
@@ -95,13 +94,13 @@ export const Login = async (req,res)=>{
             {expiresIn:'1d'}
         );
 
+        // store token in cookie
         res.cookie("token", token, {
-            httpOnly:true,
-            secure:false,
-            maxAge:24 * 60 * 60 * 1000
+            httpOnly:true
         });
 
-        res.redirect('/');
+        // redirect
+        return res.redirect("/");
         
     }catch(err){
         console.log(`Error from User Login : ${err}`);

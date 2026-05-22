@@ -503,6 +503,20 @@
             color:#94a3b8;
         }
 
+        #logout{
+            padding-top: 1rem; 
+            padding-bottom: 1rem;
+            padding-right: 2rem;
+            padding-left: 2rem;
+            font-weight: bold; 
+            font-size: 15px; 
+            color: white; 
+            background-color: red; 
+            border: none;
+            border-radius: 10px;
+            text-align: center;
+        }
+
         /* RESPONSIVE */
 
         @media(max-width:768px){
@@ -559,9 +573,9 @@
             URLify
         </div>
 
-        <a href="#" class="nav-btn">
-            Get Started
-        </a>
+        <form action="/user/logout" method="GET">
+            <button id="logout" type="submit">Logout</button>
+        </form>
 
     </nav>
 

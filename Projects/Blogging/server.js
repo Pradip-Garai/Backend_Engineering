@@ -4,6 +4,7 @@ import StaticPage from './routes/staticPages.route.js';
 import AuthRouter from './routes/userAuth.route.js';
 import path from 'path';
 import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
 dotenv.config();
 
 const PORT = process.env.PORT || 4000;
@@ -13,6 +14,7 @@ const app = express();
 app.set("view engine","ejs");
 app.set("views", path.resolve("./views"))
 
+app.use(cookieParser());
 app.use(express.urlencoded({ extended:false }));
 app.use(express.json());
 

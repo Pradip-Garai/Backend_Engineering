@@ -1,26 +1,126 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary " data-bs-theme="dark">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">BlogNest</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-expand-lg navbar-dark blog-navbar shadow-sm">
+  <div class="container-fluid px-3">
+    <a class="navbar-brand fw-bold brand-text" href="#">BlogNest</a>
+
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Add Blog</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Pradip Garai
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Logout</a></li>
-          </ul>
-        </li>
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+        <% if (locals.user) { %>
+          <li class="nav-item">
+            <a class="nav-link nav-link-custom active" aria-current="page" href="#">Home</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link nav-link-custom" href="#">Add Blog</a>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle nav-link-custom user-drop" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <span class="user-badge"><%= locals.user.name.charAt(0).toUpperCase() %></span>
+              <span><%= locals.user.name %></span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end custom-dropdown">
+              <li>
+                <form action="/auth/api/logout" method="GET">
+                  <button style="padding-right: 6rem; padding-top: 0.5rem; padding-bottom:0.5rem; border: none; color: white; background-color: #343a40; " type="submit">Logout</button>
+                </form>
+              </li>
+            </ul>
+          </li>
+        <% } %>
       </ul>
     </div>
   </div>
 </nav>
+
+<% if (locals.error) { %>
+  <div class="container mt-4">
+    <div class="alert alert-danger custom-alert" id="errorAlert" role="alert">
+      <%= locals.error %>
+    </div>
+  </div>
+
+  <script>
+    setTimeout(() => {
+      const alertBox = document.getElementById("errorAlert");
+      if (alertBox) {
+        alertBox.remove();
+      }
+    }, 1000);
+  </script>
+<% } %>
+
+<style>
+  .blog-navbar {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 55%, #111827 100%);
+    padding-top: 0.85rem;
+    padding-bottom: 0.85rem;
+  }
+
+  .brand-text {
+    font-size: 1.35rem;
+    letter-spacing: 0.3px;
+    color: #ffffff !important;
+  }
+
+  .nav-link-custom {
+    color: rgba(255, 255, 255, 0.82) !important;
+    font-weight: 500;
+    border-radius: 10px;
+    padding: 0.55rem 0.95rem !important;
+    transition: all 0.2s ease;
+  }
+
+  .nav-link-custom:hover,
+  .nav-link-custom.active {
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.10);
+  }
+
+  .user-drop {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .user-badge {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #2f80ed 0%, #5b6cff 100%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+
+  .custom-dropdown {
+    border: 0;
+    border-radius: 14px;
+    padding: 0.5rem;
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.25);
+  }
+
+  .custom-dropdown .dropdown-item {
+    border-radius: 10px;
+    padding: 0.7rem 0.9rem;
+  }
+
+  .custom-dropdown .dropdown-item:hover {
+    background: rgba(47, 128, 237, 0.12);
+  }
+
+  .custom-alert {
+    border-radius: 14px;
+    box-shadow: 0 8px 24px rgba(220, 53, 69, 0.12);
+  }
+
+  .navbar-toggler:focus {
+    box-shadow: none;
+  }
+</style>

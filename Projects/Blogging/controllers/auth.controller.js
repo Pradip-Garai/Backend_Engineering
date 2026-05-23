@@ -7,18 +7,16 @@ export const Signup = async (req,res)=>{
 
         const {fullName,gender,email,password} = req.body;
         if(!fullName || !gender || !email || !password){
-            return res.status(400).json({
-               message:`Missing fields !!!`,
-               success:false
+            return res.render("Signup",{
+                error:`Missing Fields !!! All fields are required`
             });
         }
 
         // Check is email already exsist
         const user = await User.findOne({email});
         if(user){
-            return res.status(409).json({
-               message:`User Already Registered`,
-               success:false
+            return res.render("Signup",{
+                error:`User Already Registered!!!`
             });
         }
 
@@ -33,14 +31,19 @@ export const Signup = async (req,res)=>{
             password:hashPassword
         });
 
-        return res.redirect("/");
+        // generate token
+        const token = jwt.sign(
+            {id:newUser._id, email:newUser.email, name:newUser.fullName},
+            process.env.JWT_SECRET,
+        )
+
+        return res.cookie("token",token).redirect("/");
     
     }catch(err){
         console.log(`Error from Signup: ${err}`);
-        res.status(500).json({
-            message:`Internal Server Error`,
-            success:false
-        })
+        return res.render("Signup",{
+            error:`Internal Server Error`
+        });
     }
 }
 
@@ -49,37 +52,61 @@ export const Login = async (req,res)=>{
 
         const {email,password} = req.body;
         if(!email || !password){
-            return res.status(400).json({
-                message:`Missing Email or Password`,
-                success:false
+            return res.render("Login",{
+                error:`Missing Email or Password !!!`
             });
         }
 
         // check user present or not
         const user = await User.findOne({email});
         if(!user){
-            return res.status(404).json({
-                message:`Invalid Email or Password`,
-                success:false
+            return res.render("Login",{
+                error:`Invalid Email or Password !!!`
             });
         }
 
         // check password is correct or not 
         const isPasswordMatched = await bcrypt.compare(password,user.password);
         if(!isPasswordMatched){
-            return res.status(404).json({
-                message:`Invalid Email or Password`,
-                success:false
-            })
+            return res.render("Login",{
+                error:`Invalid Email or Password !!!`
+            });
         }
 
-        return res.redirect("/");
+        // generate token
+        const token = jwt.sign(
+            {id:user._id, email:user.email, name:user.fullName},
+            process.env.JWT_SECRET,
+        )
+
+
+        return res.cookie("token",token).redirect("/");
 
     }catch(err){
         console.log(`Error from Login: ${err}`);
-        res.status(500).json({
-            message:`Internal Server Error`,
-            success:false
+        return res.render("Login",{
+            error:`Internal Server Error`
         });
+    }
+}
+
+export const Logout = async (req, res) => {
+    try {
+
+        // Clear token cookie
+        res.clearCookie("token");
+
+        // Redirect to login page
+        return res.redirect("/login");
+
+    } catch (err) {
+
+        console.log(`Error from logout user: ${err}`);
+
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error"
+        });
+
     }
 }

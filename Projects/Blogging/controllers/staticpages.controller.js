@@ -1,6 +1,8 @@
 
 export const HomePage = (req,res)=>{
-    return res.render("Home");
+    return res.render("Home",{
+        user:req.user
+    });
 }
 
 export const SignupPage = (req,res)=>{

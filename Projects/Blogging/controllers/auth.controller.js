@@ -12,6 +12,11 @@ export const Signup = async (req,res)=>{
             });
         }
 
+        if(password.length < 8){
+            return res.render("Signup",{
+                error:`Password Length should be minimum length 8 `
+            });
+        }
         // Check is email already exsist
         const user = await User.findOne({email});
         if(user){

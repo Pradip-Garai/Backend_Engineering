@@ -1,7 +1,9 @@
 import express from 'express';
-import { HomePage } from '../controllers/staticpages.controller.js';
+import { HomePage,SignupPage,LoginPage } from '../controllers/staticpages.controller.js';
 const StaticPage = express.Router();
 
 StaticPage.get("/",HomePage);
+StaticPage.get("/signup",SignupPage);
+StaticPage.get("/login",LoginPage);
 
 export default StaticPage;

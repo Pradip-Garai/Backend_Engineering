@@ -265,11 +265,16 @@
                         <img src="<%= blog.coverImageURL || 'https://via.placeholder.com/300x200?text=No+Image' %>" 
                              class="card-img-top" 
                              alt="<%= blog.title %>"
+                             loading="lazy"
                              onerror="this.src='https://via.placeholder.com/300x200?text=Image+Not+Found'">
                         <div class="card-body">
                             <h5 class="card-title"><%= blog.title %></h5>
                             
-                            <a href="/blog/<%= blog._id %>" class="btn">Read</a>
+                            <% if (blog._id) { %>
+                                <a href="/blog/<%= blog._id %>" class="btn">Read</a>
+                            <% } else { %>
+                                <span class="btn" style="opacity: 0.5; cursor: not-allowed;">Unavailable</span>
+                            <% } %>
                         </div>
                     </div>
                 <% }) %>

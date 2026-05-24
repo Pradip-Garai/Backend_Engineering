@@ -6,6 +6,12 @@ const blogSchema = new Schema({
         type:String,
         required:true,
     },
+    blogTopic:{
+        type:String,
+        enum:["Technology","Lifestyle","Travel","Food","Education","Health","Finance","Entertainment","Sports","Other"],
+        default:"Other",
+        required:true
+    },
     body:{
         type:String,
         required:true,

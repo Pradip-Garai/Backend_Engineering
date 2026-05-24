@@ -17,12 +17,25 @@
             <a class="nav-link nav-link-custom <%= locals.currentPage === 'add-blog' ? 'active' : '' %>" href="/add-blog">Add Blog</a>
           </li>
 
+          <li class="nav-item">
+            <a class="nav-link nav-link-custom <%= locals.currentPage === 'my-blogs' ? 'active' : '' %>" href="/my-blogs">My Blogs</a>
+          </li>
+
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle nav-link-custom user-drop" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               <span class="user-badge"><%= locals.user.name.charAt(0).toUpperCase() %></span>
               <span><%= locals.user.name %></span>
             </a>
             <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end custom-dropdown">
+              <li>
+                <a class="dropdown-item" href="/profile">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 8px;">
+                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm.068 5c.906 0 1.384.481 1.384 1.926v.922H.5v-.922C.5 10.479.978 10 1.868 10h.236.094c.868 0 1.36.479 1.68 1.022h5.256z"/>
+                  </svg>
+                  Profile
+                </a>
+              </li>
+              <li><hr class="dropdown-divider"></li>
               <li>
                 <form action="/auth/api/logout" method="GET">
                   <button style="padding-right: 6rem; padding-top: 0.5rem; padding-bottom:0.5rem; border: none; color: white; background-color: #343a40;  " type="submit">Logout</button>

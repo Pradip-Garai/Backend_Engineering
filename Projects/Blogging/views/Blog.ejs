@@ -37,7 +37,7 @@
                 
                 <!-- Category Tag -->
                 <div class="blog-category-badge">
-                    TECHNICAL ARTICLE
+                    <%= blog.blogTopic %>
                 </div>
 
                 <!-- Title -->
@@ -70,7 +70,10 @@
                                 <span><%= new Date(blog.createdAt).toLocaleString('en-US', { 
                                     year: 'numeric', 
                                     month: 'short', 
-                                    day: 'numeric'
+                                    day: 'numeric',
+                                    hour: 'numeric',
+                                    minute: '2-digit',
+                                    hour12: true
                                 }) %></span>
                                 <span class="meta-dot"></span>
                                 <span>5 min read</span>

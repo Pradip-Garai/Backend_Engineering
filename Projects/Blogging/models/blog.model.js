@@ -8,7 +8,7 @@ const blogSchema = new Schema({
     },
     blogTopic:{
         type:String,
-        enum:["Technology","Lifestyle","Travel","Food","Education","Health","Finance","Entertainment","Sports","Other"],
+        enum:["Technology","Jobs","Geopolitics","Lifestyle","Travel & Tour","Nature","Food","Education","Health","Finance","AI","Entertainment","Sports","Cooking","Other"],
         default:"Other",
         required:true
     },

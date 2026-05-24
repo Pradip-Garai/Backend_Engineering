@@ -1,8 +1,11 @@
+import Blog from "../models/blog.model.js";
 
-export const HomePage = (req,res)=>{
+export const HomePage = async  (req,res)=>{
+    const allBlogs = await Blog.find({}).populate('createdBy', 'fullName email profilePicture');
     return res.render("Home",{
         user:req.user,
-        currentPage:"home"
+        currentPage:"home",
+        blogs:allBlogs
     });
 }
 
@@ -19,4 +22,14 @@ export const AddBlogPage = (req,res)=>{
         user:req.user,
         currentPage:"add-blog"
     });
+}
+
+export const ReadBlogPage = async (req,res)=>{
+    
+    const blog = await Blog.findById(req.params.id).populate('createdBy', 'fullName email profilePicture');
+
+    return res.render("Blog",{
+        user:req.user,
+        blog:blog
+    })
 }

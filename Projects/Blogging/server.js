@@ -5,6 +5,7 @@ import AuthRouter from './routes/userAuth.route.js';
 import path from 'path';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
+import BlogRouter from './routes/blog.route.js';
 dotenv.config();
 
 const PORT = process.env.PORT || 4000;
@@ -21,7 +22,7 @@ app.use(express.static("public"));
 
 app.use("/",StaticPage);
 app.use("/auth/api",AuthRouter);
-
+app.use("/blog",BlogRouter);
 
 DataBase_Connection()
 .then(()=>{

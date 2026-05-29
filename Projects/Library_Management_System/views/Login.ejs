@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/Head') %>
+    <title>Login - Library Management System</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            background: #f7f1f3;
+            font-family: 'Poppins', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .login-container {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 1000px;
+            background: white;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+            display: flex;
+            height: calc(100vh - 40px);
+        }
+
+        .left-panel {
+            background: linear-gradient(135deg, #7b1e3a, #a8325c);
+            color: white;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .left-panel h1 {
+            font-size: 48px;
+            font-weight: 700;
+            line-height: 65px;
+            margin-bottom: 20px;
+        }
+
+        .left-panel p {
+            color: #f5d6df;
+            line-height: 30px;
+            font-size: 16px;
+        }
+
+        .quote-box {
+            margin-top: 35px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 16px;
+            border-left: 4px solid #fff;
+        }
+
+        .quote-box h5 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .right-panel {
+            padding: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .login-form {
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .login-form h2 {
+            color: #7b1e3a;
+            font-weight: 700;
+            margin-bottom: 15px;
+            font-size: 32px;
+        }
+
+        .login-form .subtitle {
+            color: #888;
+            margin-bottom: 35px;
+            line-height: 28px;
+            font-size: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 15px;
+            transition: 0.3s;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #7b1e3a;
+            box-shadow: 0 0 0 3px rgba(123, 30, 58, 0.1);
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 14px;
+            margin-bottom: 20px;
+            padding: 12px 15px;
+            background: #f8d7da;
+            border-radius: 8px;
+            border-left: 4px solid #dc3545;
+        }
+
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        .remember-forgot a {
+            color: #7b1e3a;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .remember-forgot a:hover {
+            text-decoration: underline;
+        }
+
+        .remember-forgot input[type="checkbox"] {
+            cursor: pointer;
+            width: 16px;
+            height: 16px;
+        }
+
+        .remember-forgot label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            margin: 0;
+        }
+
+        .remember-forgot label input {
+            margin-right: 6px;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #7b1e3a, #a8325c);
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(123, 30, 58, 0.3);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .signup-link {
+            text-align: center;
+            margin-top: 20px;
+            color: #888;
+        }
+
+        .signup-link a {
+            color: #7b1e3a;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 991px) {
+            .login-card {
+                border-radius: 20px;
+            }
+
+            .left-panel {
+                padding: 40px;
+            }
+
+            .left-panel h1 {
+                font-size: 36px;
+                line-height: 50px;
+            }
+
+            .right-panel {
+                padding: 40px 25px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .login-container {
+                padding: 15px;
+            }
+
+            .left-panel {
+                padding: 30px;
+                text-align: center;
+            }
+
+            .left-panel h1 {
+                font-size: 28px;
+                line-height: 40px;
+            }
+
+            .left-panel p {
+                font-size: 14px;
+            }
+
+            .right-panel {
+                padding: 30px 20px;
+            }
+
+            .login-form h2 {
+                font-size: 26px;
+            }
+
+            .form-group input {
+                padding: 12px 14px;
+                font-size: 14px;
+            }
+
+            .remember-forgot {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <%- include('./partials/Nav') %>
+
+    <div class="login-container">
+        <div class="login-card">
+            <div class="row g-0">
+                <!-- LEFT PANEL -->
+                <div class="col-lg-6">
+                    <div class="left-panel">
+                        <h1>
+                            Welcome Back 👋
+                        </h1>
+
+                        <p>
+                            Welcome back to your library. Log in to your account and continue exploring our vast collection of books and knowledge.
+                        </p>
+
+                        <div class="quote-box">
+                            <h5>📖 Daily Quote</h5>
+                            <p class="mb-0">
+                                "A reader lives a thousand lives before he dies. The man who never reads lives only one."
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT PANEL -->
+                <div class="col-lg-6">
+                    <div class="right-panel">
+                        <div class="login-form">
+                            <h2>Welcome Back!</h2>
+                            <p class="subtitle">
+                                Log in to your account
+                            </p>
+
+                            <% if (locals.error) { %>
+                                <div class="error-message">
+                                    <%= error %>
+                                </div>
+                            <% } %>
+
+                            <form action="/auth/api/login" method="POST">
+                                <div class="form-group">
+                                    <label for="email">Email Address</label>
+                                    <input 
+                                        type="email" 
+                                        id="email"
+                                        name="email" 
+                                        placeholder="Enter your email"
+                                        required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="password">Password</label>
+                                    <input 
+                                        type="password" 
+                                        id="password"
+                                        name="password" 
+                                        placeholder="Enter your password"
+                                        required>
+                                </div>
+
+                                <div class="remember-forgot">
+                                    <label>
+                                        <input type="checkbox" name="remember">
+                                        Remember me
+                                    </label>
+                                    <a href="#forgot-password">Forgot Password?</a>
+                                </div>
+
+                                <button type="submit" class="login-btn">
+                                    Sign In
+                                </button>
+                            </form>
+
+                            <div class="signup-link">
+                                Don't have an account?
+                                <a href="/signup">
+                                    Sign up here
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include('./partials/Scripts') %>
+</body>
+
+</html>

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/Head') %>
+    <title>Sign Up - Library Management System</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            background: #f7f1f3;
+            font-family: 'Poppins', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .signup-container {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .signup-card {
+            width: 100%;
+            max-width: 1000px;
+            background: white;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+            display: flex;
+            height: calc(100vh - 40px);
+        }
+
+        .left-panel {
+            background: linear-gradient(135deg, #7b1e3a, #a8325c);
+            color: white;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .left-panel h1 {
+            font-size: 48px;
+            font-weight: 700;
+            line-height: 65px;
+            margin-bottom: 20px;
+        }
+
+        .left-panel p {
+            color: #f5d6df;
+            line-height: 30px;
+            font-size: 16px;
+        }
+
+        .quote-box {
+            margin-top: 35px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 16px;
+            border-left: 4px solid #fff;
+        }
+
+        .quote-box h5 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .right-panel {
+            padding: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .signup-form {
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .signup-form h2 {
+            color: #7b1e3a;
+            font-weight: 700;
+            margin-bottom: 15px;
+            font-size: 32px;
+        }
+
+        .signup-form .subtitle {
+            color: #888;
+            margin-bottom: 35px;
+            line-height: 28px;
+            font-size: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 15px;
+            transition: 0.3s;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #7b1e3a;
+            box-shadow: 0 0 0 3px rgba(123, 30, 58, 0.1);
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 14px;
+            margin-bottom: 20px;
+            padding: 12px 15px;
+            background: #f8d7da;
+            border-radius: 8px;
+            border-left: 4px solid #dc3545;
+        }
+
+        .signup-btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #7b1e3a, #a8325c);
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .signup-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(123, 30, 58, 0.3);
+        }
+
+        .signup-btn:active {
+            transform: translateY(0);
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+            color: #888;
+        }
+
+        .login-link a {
+            color: #7b1e3a;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 991px) {
+            .signup-card {
+                border-radius: 20px;
+            }
+
+            .left-panel {
+                padding: 40px;
+            }
+
+            .left-panel h1 {
+                font-size: 36px;
+                line-height: 50px;
+            }
+
+            .right-panel {
+                padding: 40px 25px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .signup-container {
+                padding: 15px;
+            }
+
+            .left-panel {
+                padding: 30px;
+                text-align: center;
+            }
+
+            .left-panel h1 {
+                font-size: 28px;
+                line-height: 40px;
+            }
+
+            .left-panel p {
+                font-size: 14px;
+            }
+
+            .right-panel {
+                padding: 30px 20px;
+            }
+
+            .signup-form h2 {
+                font-size: 26px;
+            }
+
+            .form-group input {
+                padding: 12px 14px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <%- include('./partials/Nav') %>
+
+    <div class="signup-container">
+        <div class="signup-card">
+            <div class="row g-0">
+                <!-- LEFT PANEL -->
+                <div class="col-lg-6">
+                    <div class="left-panel">
+                        <h1>
+                            Start Your <br>
+                            Journey 📚
+                        </h1>
+
+                        <p>
+                            Join thousands of book lovers and explore the vast collection of knowledge in our smart library platform. Create your account and start reading today.
+                        </p>
+
+                        <div class="quote-box">
+                            <h5>✨ Why Join Us?</h5>
+                            <p class="mb-0">
+                                Access to thousands of books, personalized recommendations, and a community of readers like you.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT PANEL -->
+                <div class="col-lg-6">
+                    <div class="right-panel">
+                        <div class="signup-form">
+                            <h2>Create Account</h2>
+                            <p class="subtitle">
+                                Fill in your details to get started
+                            </p>
+
+                            <% if (locals.error) { %>
+                                <div class="error-message">
+                                    <%= error %>
+                                </div>
+                            <% } %>
+
+                            <form action="/auth/api/register" method="POST">
+                                <div class="form-group">
+                                    <label for="fullName">Full Name</label>
+                                    <input 
+                                        type="text" 
+                                        id="fullName"
+                                        name="fullName" 
+                                        placeholder="Enter your full name"
+                                        required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="email">Email Address</label>
+                                    <input 
+                                        type="email" 
+                                        id="email"
+                                        name="email" 
+                                        placeholder="Enter your email"
+                                        required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="password">Password</label>
+                                    <input 
+                                        type="password" 
+                                        id="password"
+                                        name="password" 
+                                        placeholder="Create a strong password"
+                                        required>
+                                </div>
+
+                                <button type="submit" class="signup-btn">
+                                    Create Account
+                                </button>
+                            </form>
+
+                            <div class="login-link">
+                                Already have an account?
+                                <a href="/login">
+                                    Log in here
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include('./partials/Scripts') %>
+</body>
+
+</html>

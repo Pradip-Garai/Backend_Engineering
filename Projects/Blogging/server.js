@@ -13,7 +13,7 @@ const app = express();
 
 
 app.set("view engine","ejs");
-app.set("views", path.resolve("./views"))
+app.set("views", "./views");
 
 app.use(cookieParser());
 app.use(express.urlencoded({ extended:false }));

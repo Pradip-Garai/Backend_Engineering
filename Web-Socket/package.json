@@ -1,0 +1,24 @@
+{
+  "name": "web-socket",
+  "version": "1.0.0",
+  "description": "Learn Websocket socket.io",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "dev":"nodemon server.js",
+    "start":"node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/N/A.git"
+  },
+  "keywords": [
+    "Socket.io"
+  ],
+  "author": "Pradip Garai",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/N/A/issues"
+  },
+  "homepage": "https://github.com/N/A#readme"
+}

@@ -17,3 +17,7 @@ export const LoginPage = (req,res)=>{
 export const OtpVerification = (req,res)=>{
   return res.render("Otp_Verification");
 }
+
+export const AdminpanelPage = (req,res)=>{
+  return res.render("AdminPanel");
+}

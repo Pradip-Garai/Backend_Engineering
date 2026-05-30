@@ -18,11 +18,11 @@ const storage = new CloudinaryStorage({
 
             public_id: `${Date.now()}-${originalName}`,
 
-            // Uniform Blog Cover Size
+            // Uniform Book Cover Size (Portrait 3:4)
             transformation: [
                 {
-                    width: 1200,
-                    height: 630,
+                    width: 600,
+                    height: 800,
                     crop: "fill",
                     gravity: "auto"
                 },

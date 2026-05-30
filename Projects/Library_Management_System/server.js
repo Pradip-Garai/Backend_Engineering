@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import DataBase_Connection from './db/db.js';
 import StaticPageRouter from './routes/StaticPage.route.js';
 import AuthRouter from './routes/userAuth.route.js';
+import AdminRouter from './routes/admin.route.js';
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.use(express.static("public"));
 
 app.use("/",StaticPageRouter);
 app.use("/auth/api",AuthRouter);
+app.use("/admin",AdminRouter);
 
 
 DataBase_Connection()

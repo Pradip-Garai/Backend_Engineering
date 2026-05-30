@@ -2,14 +2,406 @@
 <html lang="en">
 <head>
     <%- include('./partials/Head') %>
-    <title>Document</title>
+    <title>LibHub - Discover Your Next Great Read</title>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f7f1f3;
+        }
+
+        /* ─── HERO BANNER ───────────────────────────────────── */
+        .hero {
+            position: relative;
+            width: 100%;
+            height: 420px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* background image */
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background: url('/Banner.jpg') no-repeat center center / cover;
+            transform: scale(1.02);
+            transition: transform 8s ease;
+        }
+
+        .hero:hover .hero-bg {
+            transform: scale(1.06);
+        }
+
+        /* dark gradient overlay */
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.32);
+        }
+
+        /* content */
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 0 24px;
+            max-width: 720px;
+            animation: heroFadeUp 0.8s ease both;
+        }
+
+        @keyframes heroFadeUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.25);
+            color: #e0d8db;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+            padding: 6px 16px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(6px);
+        }
+
+        .hero-title {
+            font-size: clamp(28px, 5vw, 52px);
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1.15;
+            margin-bottom: 18px;
+            text-shadow: 0 2px 16px rgba(0,0,0,0.35);
+        }
+
+        .hero-subtitle {
+            font-size: 16px;
+            color: rgba(255,255,255,0.78);
+            line-height: 1.7;
+            margin-bottom: 36px;
+            font-weight: 400;
+        }
+
+        /* CTA buttons */
+        .hero-actions {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary-hero {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 13px 30px;
+            background: #7b1e3a;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 8px;
+            text-decoration: none;
+            border: none;
+            transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+            box-shadow: 0 6px 20px rgba(123,30,58,0.45);
+        }
+
+        .btn-primary-hero:hover {
+            background: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px #ffff;
+            color: #a8325c;
+        }
+
+        .btn-outline-hero {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 13px 30px;
+            background: transparent;
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 8px;
+            text-decoration: none;
+            border: 2px solid rgba(255,255,255,0.65);
+            transition: background 0.25s, border-color 0.25s, transform 0.2s;
+        }
+
+        .btn-outline-hero:hover {
+            background: white;
+            border-color: #fff;
+            transform: translateY(-2px);
+            color: black;
+        }
+
+        /* ─── STATS BAR ─────────────────────────────────────── */
+        .stats-bar {
+            background: #ffffff;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.07);
+            padding: 28px 40px;
+        }
+
+        .stats-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 800;
+            color: #7b1e3a;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: #888;
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        .stat-divider {
+            width: 1px;
+            height: 40px;
+            background: #e8e8e8;
+        }
+
+        @media (max-width: 600px) {
+            .hero { height: 420px; }
+            .stat-divider { display: none; }
+        }
+
+        /* ─── CATEGORY SECTION ──────────────────────────────── */
+        .category-section {
+            background: #f4f6fb;
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        .category-section h2 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 40px;
+            letter-spacing: -0.3px;
+        }
+
+        .category-grid {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            max-width: 1450px;
+            margin: 0 auto;
+        }
+
+        .category-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.25s ease;
+        }
+
+        .category-card:hover {
+            transform: translateY(-6px);
+        }
+
+        .category-img-wrap {
+            width: 150px;
+            height: 150px;
+            border-radius: 28px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+            transition: box-shadow 0.25s ease, transform 0.25s ease;
+            position: relative;
+        }
+
+        .category-card:hover .category-img-wrap {
+            box-shadow: 0 12px 30px rgba(0,0,0,0.20);
+        }
+
+        /* white inner circle holding the logo */
+        .category-img-wrap .img-circle {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .category-img-wrap .img-circle img {
+            width: 95%;
+            height: 95%;
+            object-fit: contain;
+        }
+
+        /* unique gradient backgrounds per card */
+        .cat-science   { background: linear-gradient(135deg, #74b9ff, #0984e3); }
+        .cat-tech      { background: linear-gradient(135deg, #55efc4, #00b894); }
+        .cat-math      { background: linear-gradient(135deg, #ffeaa7, #fdcb6e); }
+        .cat-lit       { background: linear-gradient(135deg, #ff7675, #d63031); }
+        .cat-history   { background: linear-gradient(135deg, #a29bfe, #6c5ce7); }
+        .cat-business  { background: linear-gradient(135deg, #fd79a8, #e84393); }
+        .cat-computer  { background: linear-gradient(135deg, #81ecec, #00cec9); }
+        .cat-story     { background: linear-gradient(135deg, #fab1a0, #e17055); }
+
+        /* label text colored to match card */
+        .category-label { font-size: 15px; font-weight: 700; }
+        .cat-science   + .category-label { color: #0984e3; }
+        .cat-tech      + .category-label { color: #00b894; }
+        .cat-math      + .category-label { color: #e17055; }
+        .cat-lit       + .category-label { color: #d63031; }
+        .cat-history   + .category-label { color: #6c5ce7; }
+        .cat-business  + .category-label { color: #e84393; }
+        .cat-computer  + .category-label { color: #00cec9; }
+        .cat-story     + .category-label { color: #e17055; }
+
+        @media (max-width: 600px) {
+            .category-section { padding: 40px 20px; }
+            .category-img-wrap { width: 92px; height: 92px; border-radius: 18px; }
+            .category-img-wrap .img-circle { width: 72px; height: 72px; }
+            .category-img-wrap .img-circle img { width: 95%; height: 95%; }
+            .category-grid { gap: 14px; }
+        }
+    </style>
 </head>
 <body>
 
     <%- include('./partials/Nav') %>
 
-    
-    <h1>Home Page</h1>
+    <!-- ─── HERO BANNER ─────────────────────────────────────── -->
+    <section class="hero" id="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+
+        <div class="hero-content">
+            <!-- <span class="hero-badge">📚 Welcome to LibHub</span> -->
+
+            <h1 class="hero-title">
+                Your Smart Library,<br>At Your Fingertips
+            </h1>
+
+            <p class="hero-subtitle">
+                Browse, borrow and manage thousands of books —<br>
+                all in one place, completely free.
+            </p>
+
+            <div class="hero-actions">
+                <a href="/books" class="btn-primary-hero">Explore All Books</a>
+                <a href="/dashboard" class="btn-outline-hero">My Books</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── CATEGORY SECTION ─────────────────────────────────── -->
+    <section class="category-section">
+        <h2>Our Books Category</h2>
+        <div class="category-grid">
+
+            <a href="/books?category=science" class="category-card">
+                <div class="category-img-wrap cat-science">
+                    <div class="img-circle">
+                        <img src="/science-logo.avif" alt="Science">
+                    </div>
+                </div>
+                <span class="category-label" style="color:#0984e3;">Science</span>
+            </a>
+
+            <a href="/books?category=technology" class="category-card">
+                <div class="category-img-wrap cat-tech">
+                    <div class="img-circle">
+                        <img src="/tech-logo.jpg" alt="Technology">
+                    </div>
+                </div>
+                <span class="category-label" style="color:#00b894;">Technology</span>
+            </a>
+
+            <a href="/books?category=mathematics" class="category-card">
+                <div class="category-img-wrap cat-math">
+                    <div class="img-circle">
+                        <img src="/math-logo.webp" alt="Mathematics">
+                    </div>
+                </div>
+                <span class="category-label" style="color:#e17055;">Mathematics</span>
+            </a>
+
+            <a href="/books?category=literature" class="category-card">
+                <div class="category-img-wrap cat-lit">
+                    <div class="img-circle">
+                        <img src="/literature-logo.jpg" alt="Literature">
+                    </div>
+                </div>
+                <span class="category-label" style="color:#d63031;">Literature</span>
+            </a>
+
+            <a href="/books?category=history" class="category-card">
+                <div class="category-img-wrap cat-history">
+                    <div class="img-circle">
+                        <img src="/history-logo.jpg" alt="History">
+                    </div>
+                </div>
+                <span class="category-label" style="color:#6c5ce7;">History</span>
+            </a>
+
+            <a href="/books?category=business" class="category-card">
+                <div class="category-img-wrap cat-business">
+                    <div class="img-circle">
+                        <img src="/business-logo.jpg" alt="Business">
+                    </div>
+                </div>
+                <span class="category-label" style="color:#e84393;">Business</span>
+            </a>
+
+            <a href="/books?category=computers" class="category-card">
+                <div class="category-img-wrap cat-computer">
+                    <div class="img-circle">
+                        <img src="/computer-logo.jpg" alt="Computers">
+                    </div>
+                </div>
+                <span class="category-label" style="color:#00cec9;">Computers</span>
+            </a>
+
+            <a href="/books?category=stories" class="category-card">
+                <div class="category-img-wrap cat-story">
+                    <div class="img-circle">
+                        <img src="/story-logo.webp" alt="Stories">
+                    </div>
+                </div>
+                <span class="category-label" style="color:#e17055;">Stories</span>
+            </a>
+        </div>
+    </section>
+
+    <%- include('./partials/Footer') %>
+
     <%- include('./partials/Scripts') %>
 </body>
 </html>

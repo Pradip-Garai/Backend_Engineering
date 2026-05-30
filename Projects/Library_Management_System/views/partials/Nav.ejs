@@ -1,20 +1,25 @@
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
   :root {
-    --primary: #1a1a2e;
-    --secondary: #16213e;
-    --accent: #e94560;
-    --light: #f7f7f7;
-    --text: #2c2c2c;
-    --border: #e8e8e8;
+    --primary: #1a1a2e;           /* deep navy for accent */
+    --accent: #e94560;            /* subtle red for actions */
+    --bg-light: #ffffff;          /* main page background */
+    --navbar-bg: #f9f9f9;        /* light navbar */
+    --text: #2c2c2c;             /* main text */
+    --border: #e8e8e8;           /* subtle borders */
+    --radius: 6px;
   }
 
+  /* ─── NAVBAR WRAPPER ────────────────────────────── */
   .navbar-wrapper {
-    background: white;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    background: var(--navbar-bg);
+    border-bottom: 1px solid var(--border);
     position: sticky;
     top: 0;
     z-index: 1000;
-    border-bottom: 1px solid var(--border);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.10), 0 1px 3px rgba(0,0,0,0.08);
+    font-family: 'Inter', sans-serif;
   }
 
   .navbar-content {
@@ -23,93 +28,93 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 40px;
+    padding: 6px 40px;
+    height: 70px;
   }
 
-  /* LOGO SECTION */
-  .logo-wrapper {
+  /* ─── LOGO ─────────────────────────────────────── */
+  .logo-brand {
     display: flex;
     align-items: center;
-    gap: 12px;
     text-decoration: none;
-    transition: all 0.3s ease;
   }
 
-  .logo-icon {
-    width: 40px;
-    height: 40px;
-    background: linear-gradient(135deg, #e94560, #ff6b7a);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-    color: white;
-    font-weight: 700;
+  .logo-img {
+    height: 48px;
+    width: auto;
+    object-fit: contain;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .logo-text {
-    font-size: 20px;
-    font-weight: 800;
-    color: var(--primary);
-    letter-spacing: -0.5px;
+  .logo-brand:hover .logo-img {
+    transform: scale(1.05);
   }
 
-  .logo-wrapper:hover .logo-icon {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(233, 69, 96, 0.3);
-  }
-
-  /* NAVIGATION LINKS */
+  /* ─── NAV LINKS ─────────────────────────────────── */
   .nav-links {
     display: flex;
-    align-items: center;
-    gap: 40px;
+    gap: 30px;
     list-style: none;
     margin: 0;
-  }
-
-  .nav-link-item {
-    position: relative;
+    padding: 0;
   }
 
   .nav-link-item a {
     color: var(--text);
     text-decoration: none;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 500;
-    transition: all 0.3s ease;
-    padding: 8px 0;
-    display: block;
+    transition: color 0.2s ease;
   }
 
-  .nav-link-item a::after {
-    content: '';
-    position: absolute;
-    bottom: 6px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: var(--accent);
-    transition: width 0.3s ease;
-  }
-
-  .nav-link-item a:hover {
+  .nav-link-item a:hover, .nav-link-item a.active-link {
     color: var(--accent);
   }
 
-  .nav-link-item a:hover::after {
-    width: 100%;
-  }
-
-  /* RIGHT SECTION */
+  /* ─── RIGHT SECTION (auth / user) ─────────────── */
   .navbar-right {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 15px;
   }
 
-  /* USER PROFILE */
+  .auth-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .btn-login {
+    padding: 8px 20px;
+    border: 2px solid var(--accent);
+    background: transparent;
+    color: var(--accent);
+    border-radius: var(--radius);
+    font-size: 14px;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .btn-login:hover {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  .btn-signup {
+    padding: 8px 20px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: var(--radius);
+    font-size: 14px;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .btn-signup:hover {
+    background: #d63849;
+  }
+
+  /* ─── USER DROPDOWN ─────────────────────────────── */
   .user-dropdown {
     position: relative;
   }
@@ -117,51 +122,38 @@
   .user-btn {
     display: flex;
     align-items: center;
-    gap: 10px;
-    background: var(--light);
-    border: none;
-    padding: 8px 15px;
-    border-radius: 25px;
+    gap: 8px;
+    background: var(--bg-light);
+    border: 1px solid var(--border);
+    padding: 6px 12px;
+    border-radius: 20px;
     cursor: pointer;
-    transition: all 0.3s ease;
     font-size: 14px;
-  }
-
-  .user-btn:hover {
-    background: #e8e8e8;
   }
 
   .avatar {
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #e94560, #ff6b7a);
-    color: white;
+    background: var(--accent);
+    color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 700;
-    font-size: 14px;
-  }
-
-  .user-name {
-    color: var(--text);
     font-weight: 600;
-    font-size: 14px;
+    font-size: 13px;
   }
 
   .dropdown-content {
     position: absolute;
-    top: 100%;
+    top: calc(100% + 8px);
     right: 0;
-    background: white;
-    border-radius: 12px;
-    min-width: 180px;
-    padding: 10px 0;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-    display: none;
-    margin-top: 8px;
+    background: #fff;
     border: 1px solid var(--border);
+    border-radius: var(--radius);
+    min-width: 150px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    display: none;
     z-index: 1001;
   }
 
@@ -170,229 +162,100 @@
   }
 
   .dropdown-item {
-    padding: 12px 18px;
+    display: block;
+    padding: 10px 14px;
     color: var(--text);
     text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    transition: all 0.2s ease;
     font-size: 14px;
+    transition: background 0.2s;
   }
 
   .dropdown-item:hover {
-    background: var(--light);
+    background: var(--navbar-bg);
+  }
+
+  .dropdown-item.danger:hover {
+    background: rgba(220,53,69,0.1);
     color: var(--accent);
-    padding-left: 22px;
   }
 
-  /* AUTH BUTTONS */
-  .auth-buttons {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-  }
-
-  .btn-login {
-    padding: 10px 24px;
-    border: 2px solid var(--accent);
-    background: transparent;
-    color: var(--accent);
-    border-radius: 8px;
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-  }
-
-  .btn-login:hover {
-    background: var(--accent);
-    color: white;
-  }
-
-  .btn-signup {
-    padding: 10px 24px;
-    background: var(--accent);
-    color: white;
-    border-radius: 8px;
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border: none;
-    display: inline-flex;
-    align-items: center;
-  }
-
-  .btn-signup:hover {
-    background: #d63849;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(233, 69, 96, 0.3);
-  }
-
-  /* HAMBURGER MENU */
+  /* ─── HAMBURGER (mobile) ─────────────────────── */
   .hamburger-menu {
     display: none;
     flex-direction: column;
-    cursor: pointer;
     gap: 5px;
+    cursor: pointer;
     background: none;
     border: none;
   }
 
   .hamburger-line {
     width: 24px;
-    height: 2.5px;
+    height: 2px;
     background: var(--text);
-    border-radius: 2px;
     transition: all 0.3s ease;
   }
 
   .hamburger-menu.active .hamburger-line:nth-child(1) {
-    transform: rotate(45deg) translate(8px, 8px);
+    transform: rotate(45deg) translate(5px,5px);
   }
-
-  .hamburger-menu.active .hamburger-line:nth-child(2) {
-    opacity: 0;
-  }
-
+  .hamburger-menu.active .hamburger-line:nth-child(2) { opacity: 0; }
   .hamburger-menu.active .hamburger-line:nth-child(3) {
-    transform: rotate(-45deg) translate(7px, -7px);
+    transform: rotate(-45deg) translate(5px,-5px);
   }
 
-  /* RESPONSIVE */
   @media (max-width: 768px) {
-    .navbar-content {
-      padding: 12px 20px;
-    }
-
-    .hamburger-menu {
-      display: flex;
-    }
-
-    .nav-links {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: white;
-      flex-direction: column;
-      gap: 0;
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease;
-      padding: 0;
-      border-top: 1px solid var(--border);
-    }
-
-    .nav-links.active {
-      max-height: 400px;
-      padding: 15px 0;
-    }
-
-    .nav-link-item {
-      padding: 0 20px;
-    }
-
-    .nav-link-item a {
-      padding: 12px 0;
-    }
-
-    .nav-link-item a::after {
-      display: none;
-    }
-
-    .navbar-right {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: var(--light);
-      flex-direction: column;
-      gap: 10px;
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease;
-      padding: 0 20px;
-      border-top: 1px solid var(--border);
-    }
-
-    .navbar-right.active {
-      max-height: 300px;
-      padding: 15px 20px;
-    }
-
-    .auth-buttons {
-      width: 100%;
-      gap: 10px;
-    }
-
-    .btn-login,
-    .btn-signup {
-      flex: 1;
-      text-align: center;
-    }
+    .navbar-content { padding: 12px 20px; }
+    .hamburger-menu { display: flex; }
+    .nav-links, .navbar-right { display: none; flex-direction: column; width: 100%; background: var(--navbar-bg); }
+    .nav-links.active, .navbar-right.active { display: flex; }
+    .nav-links { gap: 0; }
+    .nav-link-item a { padding: 12px 16px; width: 100%; }
+    .navbar-right { gap: 10px; padding: 10px 0; }
+    .auth-buttons { flex-direction: column; width: 100%; }
+    .btn-login, .btn-signup { width: 100%; text-align: center; }
   }
 </style>
 
 <nav class="navbar-wrapper">
   <div class="navbar-content">
-    <!-- LOGO -->
-    <a href="/" class="logo-wrapper">
-      <div class="logo-icon">📚</div>
-      <div class="logo-text">LibHub</div>
+    <a href="/" class="logo-brand">
+      <img src="/Libflow.png" alt="LibFlow Logo" class="logo-img">
     </a>
 
     <!-- HAMBURGER -->
-    <button class="hamburger-menu" id="hamburger">
+    <button class="hamburger-menu" id="hamburger" aria-label="Toggle navigation">
       <div class="hamburger-line"></div>
       <div class="hamburger-line"></div>
       <div class="hamburger-line"></div>
     </button>
 
-    <!-- NAVIGATION -->
+    <!-- NAVIGATION LINKS -->
     <ul class="nav-links" id="navLinks">
       <% if (locals.users) { %>
-        <li class="nav-link-item">
-          <a href="/">Home</a>
-        </li>
-        <li class="nav-link-item">
-          <a href="/books">Books</a>
-        </li>
-        <li class="nav-link-item">
-          <a href="/dashboard">Dashboard</a>
-        </li>
+        <li class="nav-link-item"><a href="/">Home</a></li>
+        <li class="nav-link-item"><a href="/books">Books</a></li>
+        <li class="nav-link-item"><a href="/my-books">My Books</a></li>
       <% } %>
     </ul>
 
-    <!-- RIGHT SECTION -->
+    <!-- RIGHT SECTION: USER / AUTH -->
     <div class="navbar-right" id="navbarRight">
       <% if (locals.users) { %>
-        <!-- USER PROFILE -->
         <div class="user-dropdown" id="userDropdown">
-          <button class="user-btn" id="userBtn">
-            <div class="avatar">
-              <%= locals.users.name.charAt(0).toUpperCase() %>
-            </div>
-            <span class="user-name">
-              <%= locals.users.name %>
-            </span>
+          <button class="user-btn" id="userBtn" aria-haspopup="true">
+            <div class="avatar"><%= locals.users.name.charAt(0).toUpperCase() %></div>
+            <span class="user-name"><%= locals.users.name %></span>
           </button>
-          <div class="dropdown-content">
-            <a href="/profile" class="dropdown-item">
-              👤 <span>Profile</span>
-            </a>
-            <a href="/auth/api/logout" class="dropdown-item">
-              🚪 <span>Logout</span>
-            </a>
+          <div class="dropdown-content" role="menu">
+            <a href="/profile" class="dropdown-item" role="menuitem">Profile</a>
+            <a href="/auth/api/logout" class="dropdown-item danger" role="menuitem">Logout</a>
+            <% if (locals.users.role === 'ADMIN') { %>
+              <a href="/admin" class="dropdown-item" role="menuitem">Admin Panel</a>
+            <% } %>
           </div>
         </div>
       <% } else { %>
-        <!-- AUTH BUTTONS -->
         <div class="auth-buttons">
           <a href="/login" class="btn-login">Login</a>
           <a href="/signup" class="btn-signup">Sign Up</a>
@@ -409,17 +272,17 @@
   const userDropdown = document.getElementById('userDropdown');
   const userBtn = document.getElementById('userBtn');
 
-  // Hamburger Menu
+  // Toggle mobile menu
   hamburger?.addEventListener('click', () => {
     hamburger.classList.toggle('active');
     navLinks.classList.toggle('active');
     navbarRight.classList.toggle('active');
   });
 
-  // User Dropdown
+  // User dropdown toggle
   userBtn?.addEventListener('click', (e) => {
     e.stopPropagation();
-    userDropdown.classList.toggle('active');
+    userDropdown?.classList.toggle('active');
   });
 
   // Close dropdown when clicking outside
@@ -427,12 +290,11 @@
     userDropdown?.classList.remove('active');
   });
 
-  // Close menu when clicking a link
+  // Highlight active link
+  const currentPath = window.location.pathname;
   document.querySelectorAll('.nav-link-item a').forEach(link => {
-    link.addEventListener('click', () => {
-      hamburger?.classList.remove('active');
-      navLinks.classList.remove('active');
-      navbarRight.classList.remove('active');
-    });
+    if (link.getAttribute('href') === currentPath) {
+      link.classList.add('active-link');
+    }
   });
 </script>

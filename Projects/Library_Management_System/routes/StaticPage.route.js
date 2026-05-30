@@ -9,5 +9,6 @@ StaticPageRouter.get("/",UserMiddleware,HomePage);
 StaticPageRouter.get("/signup",SignUpPage);
 StaticPageRouter.get("/login",LoginPage);
 StaticPageRouter.get("/otp-varification",UserMiddleware,OtpVerification);
+StaticPageRouter.get("/admin-panel",AdminMiddleware,AdminpanelPage);
 
 export default StaticPageRouter;

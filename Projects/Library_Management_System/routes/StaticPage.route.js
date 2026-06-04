@@ -1,5 +1,5 @@
 import express from 'express';
-import { SignUpPage, HomePage, LoginPage, OtpVerification, AdminpanelPage, BooksPage } from '../controllers/StaticPage.controller.js';
+import { SignUpPage, HomePage, LoginPage, OtpVerification, AdminpanelPage, BooksPage, MyBooksPage } from '../controllers/StaticPage.controller.js';
 import UserMiddleware from '../middleware/usermiddleware.js';
 import AdminMiddleware from '../middleware/adminmiddleware.js';
 
@@ -11,5 +11,6 @@ StaticPageRouter.get("/login", LoginPage);
 StaticPageRouter.get("/otp-varification", UserMiddleware, OtpVerification);
 StaticPageRouter.get("/admin-panel", AdminMiddleware, AdminpanelPage);
 StaticPageRouter.get("/books", UserMiddleware, BooksPage);
+StaticPageRouter.get("/my-books", UserMiddleware, MyBooksPage);
 
 export default StaticPageRouter;

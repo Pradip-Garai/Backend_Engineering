@@ -773,6 +773,233 @@
             70% { box-shadow: 0 0 0 6px rgba(123, 30, 58, 0); }
             100% { box-shadow: 0 0 0 0 rgba(123, 30, 58, 0); }
         }
+
+        /* ─── BORROW BUTTON & NESTED POPUP STYLING ─── */
+        .btn-borrow-book {
+            width: 100%;
+            height: 52px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border-radius: var(--radius-btn);
+            border: none;
+            background-color: var(--accent-wine);
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 20px;
+        }
+
+        .btn-borrow-book:hover {
+            background-color: var(--accent-wine-light);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(123, 30, 58, 0.25);
+        }
+
+        .btn-borrow-book:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        .btn-borrow-book:disabled {
+            background-color: #cbd5e1;
+            color: #64748b;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .borrow-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 11000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .borrow-modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .borrow-modal-card {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 460px;
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-main);
+            overflow: hidden;
+            position: relative;
+            transform: scale(0.95);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            padding: 30px;
+        }
+
+        .borrow-modal-overlay.active .borrow-modal-card {
+            transform: scale(1);
+        }
+
+        .borrow-modal-header {
+            margin-bottom: 20px;
+        }
+
+        .borrow-modal-header h3 {
+            font-size: 20px;
+            color: var(--text-title);
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .borrow-modal-header p {
+            color: var(--text-muted);
+            font-size: 13.5px;
+        }
+
+        .borrow-detail-row {
+            background-color: #f8fafc;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .borrow-detail-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13.5px;
+        }
+
+        .borrow-detail-label {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .borrow-detail-value {
+            color: var(--text-title);
+            font-weight: 600;
+            text-align: right;
+            max-width: 240px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .borrow-form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .borrow-form-group label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-body);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .borrow-input {
+            width: 100%;
+            height: 48px;
+            padding: 10px 14px;
+            border-radius: var(--radius-input);
+            border: 1px solid #cbd5e1;
+            background-color: #f8fafc;
+            font-family: inherit;
+            font-size: 14.5px;
+            font-weight: 500;
+            color: var(--text-title);
+            outline: none;
+            transition: all 0.25s ease;
+        }
+
+        .borrow-input:focus {
+            border-color: var(--accent-wine);
+            background-color: #fff;
+            box-shadow: 0 0 0 4px var(--accent-wine-trans);
+        }
+
+        .borrow-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-borrow-cancel {
+            flex: 1;
+            height: 48px;
+            border-radius: var(--radius-btn);
+            border: 1px solid var(--border-main);
+            background-color: #ffffff;
+            color: var(--text-body);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-borrow-cancel:hover {
+            background-color: #f1f5f9;
+        }
+
+        .btn-borrow-submit {
+            flex: 2;
+            height: 48px;
+            border-radius: var(--radius-btn);
+            border: none;
+            background-color: var(--accent-wine);
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-borrow-submit:hover {
+            background-color: var(--accent-wine-light);
+        }
+
+        /* ─── TOAST NOTIFICATIONS ─── */
+        .toast {
+            background-color: #ffffff;
+            border-left: 5px solid var(--accent-wine);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            border-radius: 8px;
+            padding: 16px 20px;
+            color: var(--text-title);
+            font-size: 14.5px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 300px;
+            transform: translateX(120%);
+            transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: auto;
+        }
+        .toast.show {
+            transform: translateX(0);
+        }
+        .toast-success {
+            border-left-color: #10b981;
+        }
+        .toast-error {
+            border-left-color: #ef4444;
+        }
     </style>
 </head>
 <body>
@@ -906,7 +1133,7 @@
                         <!-- Actions -->
                         <div class="book-card-actions">
                             <button class="btn-show-book" 
-                                    onclick="triggerBookModal('<%= book.title.replace(/'/g, '\\\'') %>', '<%= book.author.replace(/'/g, '\\\'') %>', '<%= book.catagory.replace(/'/g, '\\\'') %>', '<%= book.isbn.replace(/'/g, '\\\'') %>', '<%= book.quantity %>', '<%= (book.bookImageURL || '').replace(/'/g, '\\\'') %>', '<%= (book.descriptions || 'No synopsis provided.').replace(/'/g, '\\\'').replace(/\n/g, '\\n').replace(/\r/g, '') %>')">
+                                    onclick="triggerBookModal('<%= book._id %>', '<%= book.title.replace(/'/g, '\\\'') %>', '<%= book.author.replace(/'/g, '\\\'') %>', '<%= book.catagory.replace(/'/g, '\\\'') %>', '<%= book.isbn.replace(/'/g, '\\\'') %>', '<%= book.quantity %>', '<%= (book.bookImageURL || '').replace(/'/g, '\\\'') %>', '<%= (book.descriptions || 'No synopsis provided.').replace(/'/g, '\\\'').replace(/\n/g, '\\n').replace(/\r/g, '') %>')">
                                 <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                                 <span>Show</span>
                             </button>
@@ -969,12 +1196,60 @@
                                 <div class="modal-meta-val" id="modalBookQty">0 copies</div>
                             </div>
                         </div>
+
+                        <!-- Borrow Button Action -->
+                        <div style="margin-top: 20px;">
+                            <button class="btn-borrow-book" id="modalBorrowBtn" onclick="openBorrowPopup()">
+                                <svg style="width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:2.5; margin-right:8px;" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 19.5A2.5 2.5 0 0 0 6.5 22H20M4 19.5V3a1 1 0 0 1 1-1h15v20H5a1 1 0 0 1-1-1v-1.5z"></path></svg>
+                                <span id="modalBorrowBtnText">Borrow Book</span>
+                            </button>
+                        </div>
                     </div>
 
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- ─── BORROW FORM MODAL OVERLAY ─── -->
+    <div class="borrow-modal-overlay" id="borrowFormModal" onclick="closeBorrowPopup(event)">
+        <div class="borrow-modal-card" onclick="event.stopPropagation()">
+            <div class="borrow-modal-header">
+                <h3>Confirm Borrow Request</h3>
+                <p>Verify details and select a return date below.</p>
+            </div>
+            
+            <div class="borrow-detail-row">
+                <div class="borrow-detail-item">
+                    <span class="borrow-detail-label">Title:</span>
+                    <span class="borrow-detail-value" id="borrowModalTitle">Book Title</span>
+                </div>
+                <div class="borrow-detail-item">
+                    <span class="borrow-detail-label">Author:</span>
+                    <span class="borrow-detail-value" id="borrowModalAuthor">by Author</span>
+                </div>
+                <div class="borrow-detail-item">
+                    <span class="borrow-detail-label">ISBN Code:</span>
+                    <span class="borrow-detail-value" id="borrowModalIsbn">ISBN</span>
+                </div>
+            </div>
+
+            <form id="borrowForm" onsubmit="submitBorrowRequest(event)">
+                <div class="borrow-form-group">
+                    <label for="borrowReturnDate">Expected Return Date</label>
+                    <input type="date" id="borrowReturnDate" class="borrow-input" required>
+                </div>
+
+                <div class="borrow-actions">
+                    <button type="button" class="btn-borrow-cancel" onclick="closeBorrowPopup()">Cancel</button>
+                    <button type="submit" class="btn-borrow-submit" id="btnSubmitBorrow">Confirm Borrow</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" style="position: fixed; top: 24px; right: 24px; z-index: 99999; display: flex; flex-direction: column; gap: 12px; pointer-events: none;"></div>
 
     <%- include('./partials/Footer') %>
 
@@ -1034,7 +1309,12 @@
         }
 
         // Trigger Detailed Modal Popup
-        function triggerBookModal(title, author, category, isbn, quantity, imageURL, description) {
+        function triggerBookModal(id, title, author, category, isbn, quantity, imageURL, description) {
+            window.currentBookId = id;
+            window.currentBookTitle = title;
+            window.currentBookAuthor = author;
+            window.currentBookIsbn = isbn;
+
             document.getElementById("modalBookTitle").innerText = title;
             document.getElementById("modalBookAuthor").innerText = "by " + author;
             document.getElementById("modalBookIsbn").innerText = isbn;
@@ -1069,6 +1349,19 @@
                 modalFallback.style.display = "flex";
             }
 
+            // Setup Borrow Button state
+            const qtyNum = parseInt(quantity);
+            const borrowBtn = document.getElementById("modalBorrowBtn");
+            const borrowBtnText = document.getElementById("modalBorrowBtnText");
+            
+            if (qtyNum <= 0) {
+                borrowBtn.disabled = true;
+                borrowBtnText.innerText = "Out of Stock";
+            } else {
+                borrowBtn.disabled = false;
+                borrowBtnText.innerText = "Borrow Book";
+            }
+
             // Display overlay
             document.getElementById("bookDetailsModal").classList.add("active");
             document.body.style.overflow = "hidden"; // disable background scrolling
@@ -1078,6 +1371,107 @@
         function closeBookModal(event) {
             document.getElementById("bookDetailsModal").classList.remove("active");
             document.body.style.overflow = ""; // restore background scrolling
+        }
+
+        // Open Borrow nested popup
+        function openBorrowPopup() {
+            // Set values
+            document.getElementById("borrowModalTitle").innerText = window.currentBookTitle;
+            document.getElementById("borrowModalAuthor").innerText = "by " + window.currentBookAuthor;
+            document.getElementById("borrowModalIsbn").innerText = window.currentBookIsbn;
+
+            // Set return date minimum to tomorrow
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            document.getElementById("borrowReturnDate").min = tomorrow.toISOString().split('T')[0];
+            document.getElementById("borrowReturnDate").value = "";
+
+            document.getElementById("borrowFormModal").classList.add("active");
+        }
+
+        // Close Borrow nested popup
+        function closeBorrowPopup(event) {
+            document.getElementById("borrowFormModal").classList.remove("active");
+        }
+
+        // Submit Borrow request to the backend
+        async function submitBorrowRequest(event) {
+            event.preventDefault();
+            const btnSubmit = document.getElementById("btnSubmitBorrow");
+            const returnDate = document.getElementById("borrowReturnDate").value;
+
+            if (!returnDate) {
+                showToast("Please select a return date.", "error");
+                return;
+            }
+
+            try {
+                btnSubmit.disabled = true;
+                btnSubmit.innerText = "Processing...";
+
+                const response = await fetch("/borrow/api/borrow", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        bookId: window.currentBookId,
+                        returnDate: returnDate
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    showToast(data.message, "success");
+                    
+                    // Close popups
+                    closeBorrowPopup();
+                    closeBookModal();
+
+                    // Reload page after a delay to update inventory
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500);
+                } else {
+                    showToast(data.message || "Failed to borrow the book.", "error");
+                    btnSubmit.disabled = false;
+                    btnSubmit.innerText = "Confirm Borrow";
+                }
+            } catch (err) {
+                console.error("Borrow request failed:", err);
+                showToast("Connection error. Please try again.", "error");
+                btnSubmit.disabled = false;
+                btnSubmit.innerText = "Confirm Borrow";
+            }
+        }
+
+        // Toast notifications
+        function showToast(message, type = "success") {
+            const container = document.getElementById("toastContainer");
+            const toast = document.createElement("div");
+            toast.className = `toast toast-${type}`;
+            
+            let icon = "✔️";
+            if (type === "error") icon = "❌";
+            
+            toast.innerHTML = `
+                <span style="font-size: 18px;">${icon}</span>
+                <span>${message}</span>
+            `;
+            container.appendChild(toast);
+            
+            // Trigger reflow
+            toast.offsetHeight;
+            
+            toast.classList.add("show");
+            
+            setTimeout(() => {
+                toast.classList.remove("show");
+                setTimeout(() => {
+                    toast.remove();
+                }, 400);
+            }, 3500);
         }
     </script>
 </body>

@@ -1058,6 +1058,12 @@
                     <span>Manage Books</span>
                 </div>
             </li>
+            <li>
+                <div class="menu-item" onclick="switchTab('borrowing-status', this)">
+                    <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    <span>Borrowing Status</span>
+                </div>
+            </li>
         </ul>
 
         <div class="sidebar-footer">
@@ -1099,7 +1105,7 @@
                 
                 <div class="stat-card">
                     <div class="stat-info">
-                        <h3>1,248</h3>
+                        <h3><%= stats.totalBooks %></h3>
                         <p>Total Books</p>
                     </div>
                     <div class="stat-icon books">
@@ -1109,7 +1115,7 @@
 
                 <div class="stat-card">
                     <div class="stat-info">
-                        <h3>412</h3>
+                        <h3><%= stats.activeBorrows %></h3>
                         <p>Borrowed Books</p>
                     </div>
                     <div class="stat-icon borrowed">
@@ -1119,7 +1125,7 @@
 
                 <div class="stat-card">
                     <div class="stat-info">
-                        <h3>98</h3>
+                        <h3><%= stats.activeReaders %></h3>
                         <p>Active Readers</p>
                     </div>
                     <div class="stat-icon readers">
@@ -1129,7 +1135,7 @@
 
                 <div class="stat-card">
                     <div class="stat-info">
-                        <h3>14</h3>
+                        <h3><%= stats.overdueCount %></h3>
                         <p>Overdue Notices</p>
                     </div>
                     <div class="stat-icon overdue">
@@ -1153,49 +1159,25 @@
                         </div>
                         
                         <div class="activity-feed">
-                            <div class="activity-item">
-                                <div class="activity-details">
-                                    <div class="activity-badge" style="background:#e0f2fe; border-color:#bae6fd;">📘</div>
-                                    <div class="activity-text">
-                                        <h4>Pradip Garai borrowed "Introduction to Algorithms"</h4>
-                                        <p>Member ID: #6a1a7e4aebdd | Category: Technology</p>
+                            <% if (borrows && borrows.length > 0) { %>
+                                <% borrows.slice(0, 5).forEach(function(b) { %>
+                                    <% var u = b.userId || {}; var bk = b.bookId || {}; %>
+                                    <div class="activity-item">
+                                        <div class="activity-details">
+                                            <div class="activity-badge" style="background:#e0f2fe; border-color:#bae6fd;">📘</div>
+                                            <div class="activity-text">
+                                                <h4><%= u.fullName || 'Unknown User' %> <%= b.status === 'BORROWED' ? 'borrowed' : 'returned' %> "<%= bk.title || 'Unknown Book' %>"</h4>
+                                                <p>Email: <%= u.email || 'N/A' %> | Status: <span style="color: <%= b.status === 'BORROWED' ? '#10b981' : '#ef4444' %>; font-weight: 700;"><%= b.status %></span></p>
+                                            </div>
+                                        </div>
+                                        <div class="activity-time">
+                                            <%= new Date(b.createdAt).toLocaleDateString(undefined, {month: 'short', day: 'numeric'}) %>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="activity-time">5 mins ago</div>
-                            </div>
-
-                            <div class="activity-item">
-                                <div class="activity-details">
-                                    <div class="activity-badge" style="background:#fee2e2; border-color:#fecaca;">🔬</div>
-                                    <div class="activity-text">
-                                        <h4>Sarah Connor borrowed "Quantum Physics Basics"</h4>
-                                        <p>Member ID: #7c2d91ea8a10 | Category: Science</p>
-                                    </div>
-                                </div>
-                                <div class="activity-time">42 mins ago</div>
-                            </div>
-
-                            <div class="activity-item">
-                                <div class="activity-details">
-                                    <div class="activity-badge" style="background:#fef3c7; border-color:#fde68a;">🎻</div>
-                                    <div class="activity-text">
-                                        <h4>John Doe returned "The Great Gatsby"</h4>
-                                        <p>Member ID: #9f8c12de40ff | Category: Literature</p>
-                                    </div>
-                                </div>
-                                <div class="activity-time">2 hours ago</div>
-                            </div>
-
-                            <div class="activity-item">
-                                <div class="activity-details">
-                                    <div class="activity-badge" style="background:#ecfdf5; border-color:#a7f3d0;">📈</div>
-                                    <div class="activity-text">
-                                        <h4>Emily Watson borrowed "Principles of Finance"</h4>
-                                        <p>Member ID: #1a4d8c6b22ee | Category: Business</p>
-                                    </div>
-                                </div>
-                                <div class="activity-time">4 hours ago</div>
-                            </div>
+                                <% }); %>
+                            <% } else { %>
+                                <p style="text-align: center; color: var(--text-muted); font-size: 14px; padding: 20px;">No recent activity</p>
+                            <% } %>
                         </div>
                     </div>
 
@@ -1321,7 +1303,7 @@
                         </div>
                         
                         <div style="font-size: 14px; font-weight:600; color:var(--text-muted);">
-                            Showing <span id="visibleCount">3</span> books
+                            Showing <span id="visibleCount"><%= books.length %></span> books
                         </div>
                     </div>
 
@@ -1337,99 +1319,126 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- Mock Book 1 -->
-                                <tr class="book-row">
-                                    <td>
-                                        <div class="book-meta">
-                                            <div class="book-cover" style="background:#e0f2fe; color:#0284c7; border-color:#bae6fd;">📘</div>
-                                            <div class="book-details">
-                                                <h4>Introduction to Algorithms</h4>
-                                                <p>by Thomas H. Cormen</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span class="badge-cat" style="background:rgba(0,184,148,0.1); color:#00b894;">Technology</span>
-                                    </td>
-                                    <td class="book-isbn" style="font-family:monospace; font-weight:600;">978-0262033848</td>
-                                    <td>
-                                        <strong>4</strong> / 5 copies
-                                    </td>
-                                    <td>
-                                        <div class="action-btns">
-                                            <button class="btn-action view" title="View Book Details" onclick="viewBookDetails('Introduction to Algorithms', 'Thomas H. Cormen', 'Technology', '978-0262033848', '5', 'A comprehensive guide to the analysis and design of computer algorithms.')">
-                                                <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                                            </button>
-                                            <button class="btn-action delete" title="Delete Book" onclick="triggerDeleteModal('Introduction to Algorithms')">
-                                                <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <!-- Mock Book 2 -->
-                                <tr class="book-row">
-                                    <td>
-                                        <div class="book-meta">
-                                            <div class="book-cover" style="background:#fee2e2; color:#ef4444; border-color:#fecaca;">🔬</div>
-                                            <div class="book-details">
-                                                <h4>Quantum Physics Basics</h4>
-                                                <p>by Sarah Connor</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span class="badge-cat" style="background:rgba(9,132,227,0.1); color:#0984e3;">Science</span>
-                                    </td>
-                                    <td class="book-isbn" style="font-family:monospace; font-weight:600;">978-0071765961</td>
-                                    <td>
-                                        <strong>2</strong> / 3 copies
-                                    </td>
-                                    <td>
-                                        <div class="action-btns">
-                                            <button class="btn-action view" title="View Book Details" onclick="viewBookDetails('Quantum Physics Basics', 'Sarah Connor', 'Science', '978-0071765961', '3', 'An introductory textbook detailing the fundamental core mechanics of physics.')">
-                                                <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                                            </button>
-                                            <button class="btn-action delete" title="Delete Book" onclick="triggerDeleteModal('Quantum Physics Basics')">
-                                                <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <!-- Mock Book 3 -->
-                                <tr class="book-row">
-                                    <td>
-                                        <div class="book-meta">
-                                            <div class="book-cover" style="background:#fef3c7; color:#d97706; border-color:#fde68a;">🎻</div>
-                                            <div class="book-details">
-                                                <h4>The Great Gatsby</h4>
-                                                <p>by F. Scott Fitzgerald</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span class="badge-cat" style="background:rgba(214,48,49,0.1); color:#d63031;">Literature</span>
-                                    </td>
-                                    <td class="book-isbn" style="font-family:monospace; font-weight:600;">978-0743273565</td>
-                                    <td>
-                                        <strong>8</strong> / 8 copies
-                                    </td>
-                                    <td>
-                                        <div class="action-btns">
-                                            <button class="btn-action view" title="View Book Details" onclick="viewBookDetails('The Great Gatsby', 'F. Scott Fitzgerald', 'Literature', '978-0743273565', '8', 'The classic literature detailing the tragic romance of Jay Gatsby.')">
-                                                <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                                            </button>
-                                            <button class="btn-action delete" title="Delete Book" onclick="triggerDeleteModal('The Great Gatsby')">
-                                                <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
+                                <% if (books && books.length > 0) { %>
+                                    <% books.forEach(function(book) { %>
+                                        <tr class="book-row">
+                                            <td>
+                                                <div class="book-meta">
+                                                    <% if (book.bookImageURL) { %>
+                                                        <img src="<%= book.bookImageURL %>" style="width: 38px; height: 50px; object-fit: contain; border-radius: 4px; border: 1px solid var(--border-main); margin-right: 12px;" alt="">
+                                                    <% } else { %>
+                                                        <div class="book-cover" style="background:#e0f2fe; color:#0284c7; border-color:#bae6fd;">📘</div>
+                                                    <% } %>
+                                                    <div class="book-details">
+                                                        <h4><%= book.title %></h4>
+                                                        <p>by <%= book.author %></p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="badge-cat"><%= book.catagory %></span>
+                                            </td>
+                                            <td class="book-isbn" style="font-family:monospace; font-weight:600;"><%= book.isbn %></td>
+                                            <td>
+                                                <strong><%= book.quantity %></strong> copies
+                                            </td>
+                                            <td>
+                                                <div class="action-btns">
+                                                    <button class="btn-action view" title="View Book Details" onclick="viewBookDetails('<%= book.title.replace(/'/g, '\\\'') %>', '<%= book.author.replace(/'/g, '\\\'') %>', '<%= book.catagory.replace(/'/g, '\\\'') %>', '<%= book.isbn.replace(/'/g, '\\\'') %>', '<%= book.quantity %>', '<%= (book.descriptions || '').replace(/'/g, '\\\'').replace(/\n/g, '\\n').replace(/\r/g, '') %>')">
+                                                        <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                                    </button>
+                                                    <button class="btn-action delete" title="Delete Book" onclick="triggerDeleteModal('<%= book.title.replace(/'/g, '\\\'') %>')">
+                                                        <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    <% }); %>
+                                <% } else { %>
+                                    <tr>
+                                        <td colspan="5" style="text-align: center; padding: 30px; color: var(--text-muted);">No books in library catalog.</td>
+                                    </tr>
+                                <% } %>
                             </tbody>
                         </table>
                     </div>
 
+                </div>
+            </div>
+
+            <!-- ─── TAB 4: BORROWING STATUS SECTION ─────────────────── -->
+            <div id="borrowing-statusTab" class="tab-panel">
+                <div class="panel-card">
+                    <div class="table-toolbar">
+                        <div class="search-box-wrapper">
+                            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                            <input type="text" id="borrowSearch" class="search-input" placeholder="Search by name, email or book..." onkeyup="filterBorrowTable()">
+                        </div>
+                        <div style="font-size: 14px; font-weight:600; color:var(--text-muted);">
+                            Showing <span id="visibleBorrowCount"><%= borrows.length %></span> borrows
+                        </div>
+                    </div>
+
+                    <div class="custom-table-container">
+                        <table class="custom-table" id="borrowTable">
+                            <thead>
+                                <tr>
+                                    <th>User details</th>
+                                    <th>Book title</th>
+                                    <th>ISBN Code</th>
+                                    <th>Borrow Date</th>
+                                    <th>Return Schedule</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if (borrows && borrows.length > 0) { %>
+                                    <% borrows.forEach(function(b) { %>
+                                        <% var u = b.userId || {}; var bk = b.bookId || {}; %>
+                                        <% var isOverdue = b.status === 'BORROWED' && new Date(b.returnDate) < new Date(); %>
+                                        <tr class="borrow-row">
+                                            <td>
+                                                <div class="book-details">
+                                                    <h4 style="font-weight: 700; color: var(--text-title);"><%= u.fullName || 'Unknown' %></h4>
+                                                    <p style="font-size:12px; color:var(--text-muted);"><%= u.email || 'N/A' %></p>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <h4 style="font-weight: 600;"><%= bk.title || 'Unknown Title' %></h4>
+                                                <p style="font-size:12px; color:var(--text-muted);">by <%= bk.author || 'N/A' %></p>
+                                            </td>
+                                            <td style="font-family:monospace; font-weight:600;"><%= bk.isbn || 'N/A' %></td>
+                                            <td><%= new Date(b.borrowDate).toLocaleDateString(undefined, {month: 'short', day: 'numeric', year: 'numeric'}) %></td>
+                                            <td><%= new Date(b.returnDate).toLocaleDateString(undefined, {month: 'short', day: 'numeric', year: 'numeric'}) %></td>
+                                            <td>
+                                                <% if (b.status === 'RETURNED') { %>
+                                                    <span class="badge-cat" style="background:rgba(239, 68, 68, 0.1); color:#ef4444; padding: 4px 10px; font-size:12px; font-weight:700;">Returned</span>
+                                                <% } else if (isOverdue) { %>
+                                                    <span class="badge-cat" style="background:rgba(239, 68, 68, 0.1); color:#ef4444; padding: 4px 10px; font-size:12px; font-weight:700;">Overdue</span>
+                                                <% } else { %>
+                                                    <span class="badge-cat" style="background:rgba(16, 185, 129, 0.1); color:#10b981; padding: 4px 10px; font-size:12px; font-weight:700;">Borrowed</span>
+                                                <% } %>
+                                            </td>
+                                            <td>
+                                                <% if (b.status === 'BORROWED') { %>
+                                                    <button class="btn-submit" style="padding: 6px 12px; font-size: 12px; height: auto;" onclick="markAsReturned('<%= b._id %>')">
+                                                        Mark Returned
+                                                    </button>
+                                                <% } else { %>
+                                                    <span style="font-size:12px; color:var(--text-muted); font-weight:600;">Complete</span>
+                                                <% } %>
+                                            </td>
+                                        </tr>
+                                    <% }); %>
+                                <% } else { %>
+                                    <tr>
+                                        <td colspan="7" style="text-align: center; padding: 30px; color: var(--text-muted);">No borrowing transactions found.</td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
@@ -1513,6 +1522,55 @@
             if (tabName === 'overview') headerTitle.innerText = "Dashboard Overview";
             else if (tabName === 'add-book') headerTitle.innerText = "Add New Book Catalog Entry";
             else if (tabName === 'manage-books') headerTitle.innerText = "Manage Library Book Stock";
+            else if (tabName === 'borrowing-status') headerTitle.innerText = "User Borrowing Status & History";
+        }
+
+        // Live Borrow Table Search Filter
+        function filterBorrowTable() {
+            const query = document.getElementById("borrowSearch").value.toLowerCase();
+            const rows = document.querySelectorAll("#borrowTable tbody .borrow-row");
+            let count = 0;
+
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                if (text.includes(query)) {
+                    row.style.display = "";
+                    count++;
+                } else {
+                    row.style.display = "none";
+                }
+            });
+
+            document.getElementById("visibleBorrowCount").innerText = count;
+        }
+
+        // Mark book as returned via AJAX (Admin Action)
+        async function markAsReturned(borrowId) {
+            if (!confirm("Are you sure you want to mark this book as returned?")) {
+                return;
+            }
+
+            try {
+                const response = await fetch("/borrow/api/return", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ borrowId: borrowId })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    alert(data.message);
+                    window.location.reload();
+                } else {
+                    alert(data.message || "Failed to return the book.");
+                }
+            } catch (err) {
+                console.error("Return transaction failed:", err);
+                alert("Connection error. Please try again.");
+            }
         }
 
         // Live Table Search Filter

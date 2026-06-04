@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/Head') %>
+    <title>My Borrowed Books - LibFlow</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-base: #f7f1f3;
+            --accent-wine: #7b1e3a; /* LibFlow maroon */
+            --accent-wine-light: #9c284e;
+            --accent-wine-trans: rgba(123, 30, 58, 0.06);
+            --card-bg: #ffffff;
+            --border-subtle: #f1f5f9;
+            --border-main: #e2e8f0;
+            --text-title: #0f172a;
+            --text-body: #334155;
+            --text-muted: #64748b;
+            
+            --shadow-subtle: 0 4px 20px -2px rgba(15, 23, 42, 0.04);
+            --shadow-hover: 0 20px 25px -5px rgba(15, 23, 42, 0.08), 0 10px 10px -5px rgba(15, 23, 42, 0.03);
+            
+            --radius-card: 16px;
+            --radius-btn: 10px;
+            --radius-input: 10px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-body);
+            font-family: 'Poppins', 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            flex-grow: 1;
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        /* ─── HERO HEADER BANNER ────────────────────────────── */
+        .dashboard-header {
+            background: linear-gradient(135deg, #581c2e 0%, #1e1b4b 60%, #0f172a 100%);
+            border-radius: 24px;
+            padding: 50px 30px;
+            text-align: center;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInDown 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .dashboard-header h1 {
+            font-size: clamp(24px, 4vw, 36px);
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 8px;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .dashboard-header p {
+            color: rgba(243, 237, 240, 0.85);
+            font-size: 15px;
+            max-width: 580px;
+            margin: 0 auto;
+        }
+
+        /* ─── SECTION NAV TABS ────────────────────────────── */
+        .section-tabs {
+            display: flex;
+            gap: 16px;
+            border-bottom: 2px solid var(--border-main);
+            margin-bottom: 30px;
+            padding-bottom: 2px;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 12px 24px;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: inherit;
+            color: var(--text-muted);
+            cursor: pointer;
+            position: relative;
+            transition: color 0.2s ease;
+        }
+
+        .tab-btn:hover {
+            color: var(--accent-wine);
+        }
+
+        .tab-btn.active {
+            color: var(--accent-wine);
+        }
+
+        .tab-btn.active::after {
+            content: "";
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background-color: var(--accent-wine);
+            border-radius: 2px;
+        }
+
+        /* ─── DYNAMIC BORROW GRID ──────────────────────────── */
+        .borrow-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .borrow-card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-card);
+            border: 1px solid var(--border-main);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow-subtle);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+        }
+
+        .borrow-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-hover);
+            border-color: rgba(123, 30, 58, 0.15);
+        }
+
+        /* Card cover */
+        .borrow-cover-wrap {
+            height: 200px;
+            background: linear-gradient(135deg, #fafafa 0%, #f5ecef 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            position: relative;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .borrow-cover-img {
+            max-height: 100%;
+            max-width: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.12));
+        }
+
+        .borrow-cover-fallback {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 6px;
+            padding: 10px;
+        }
+
+        .fallback-icon {
+            font-size: 36px;
+        }
+
+        .fallback-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-muted);
+            max-width: 180px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Badges */
+        .badge-status {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .badge-status.active {
+            background-color: rgba(16, 185, 129, 0.12);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .badge-status.returned {
+            background-color: rgba(99, 102, 241, 0.12);
+            color: #6366f1;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .badge-status.overdue {
+            background-color: rgba(239, 68, 68, 0.12);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            animation: pulse-overdue 1.5s infinite;
+        }
+
+        /* Body Info */
+        .borrow-content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex-grow: 1;
+        }
+
+        .borrow-title {
+            font-size: 16px;
+            font-weight: 750;
+            color: var(--text-title);
+            line-height: 1.4;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .borrow-author {
+            font-size: 13.5px;
+            color: var(--text-muted);
+            margin-top: -6px;
+        }
+
+        .borrow-divider {
+            height: 1px;
+            background-color: var(--border-subtle);
+        }
+
+        .borrow-meta-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 13px;
+        }
+
+        .borrow-meta-item {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .meta-label {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .meta-val {
+            color: var(--text-body);
+            font-weight: 600;
+        }
+
+        .meta-val.highlight-green {
+            color: #10b981;
+        }
+
+        .meta-val.highlight-red {
+            color: #ef4444;
+            font-weight: 700;
+        }
+
+        /* Card Actions */
+        .borrow-actions {
+            padding: 0 20px 20px 20px;
+            margin-top: auto;
+        }
+
+        .btn-return {
+            width: 100%;
+            height: 46px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border-radius: var(--radius-btn);
+            border: 1px solid var(--accent-wine);
+            background-color: transparent;
+            color: var(--accent-wine);
+            font-size: 14px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-return:hover {
+            background-color: var(--accent-wine);
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(123, 30, 58, 0.15);
+        }
+
+        .btn-return:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        /* ─── BLANK STATE ──────────────────────────────────── */
+        .blank-state {
+            text-align: center;
+            padding: 80px 40px;
+            background-color: var(--card-bg);
+            border-radius: var(--radius-card);
+            border: 1px dashed var(--border-main);
+            grid-column: 1 / -1;
+        }
+
+        .blank-state-icon {
+            font-size: 56px;
+            margin-bottom: 16px;
+        }
+
+        .blank-state h3 {
+            font-size: 18px;
+            color: var(--text-title);
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .blank-state p {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .btn-browse-catalog {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 46px;
+            padding: 0 24px;
+            border-radius: var(--radius-btn);
+            background-color: var(--accent-wine);
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-browse-catalog:hover {
+            background-color: var(--accent-wine-light);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(123, 30, 58, 0.2);
+        }
+
+        /* ─── TOAST NOTIFICATIONS ─── */
+        .toast-container {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            pointer-events: none;
+        }
+
+        .toast {
+            background-color: #ffffff;
+            border-left: 5px solid var(--accent-wine);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            border-radius: 8px;
+            padding: 16px 20px;
+            color: var(--text-title);
+            font-size: 14.5px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 300px;
+            transform: translateX(120%);
+            transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: auto;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast-success {
+            border-left-color: #10b981;
+        }
+
+        .toast-error {
+            border-left-color: #ef4444;
+        }
+
+        /* ─── KEYFRAMES ────────────────────────────────────── */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse-overdue {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+            70% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+    </style>
+</head>
+<body>
+    <%- include('./partials/Nav') %>
+
+    <main>
+        <!-- ─── HEADER BANNER ─── -->
+        <header class="dashboard-header">
+            <h1>My Borrowed Books</h1>
+            <p>Manage your active borrows, view return schedules, and browse return history.</p>
+        </header>
+
+        <!-- ─── NAVIGATION TABS ─── -->
+        <section class="section-tabs">
+            <button class="tab-btn active" id="tabBorrowed" onclick="switchTab('borrowed')">Currently Borrowed</button>
+            <button class="tab-btn" id="tabHistory" onclick="switchTab('history')">Borrowing History</button>
+        </section>
+
+        <!-- ─── DYNAMIC EJS LISTING ─── -->
+        
+        <!-- Active Borrows Section -->
+        <section class="borrow-grid" id="borrowedSection">
+            <% 
+            var activeBorrows = borrows.filter(b => b.status === "BORROWED");
+            if (activeBorrows.length > 0) { 
+                activeBorrows.forEach(function(item) { 
+                    var book = item.bookId || {};
+                    var isOverdue = new Date(item.returnDate) < new Date();
+                    
+                    // calculate days remaining
+                    var diffTime = new Date(item.returnDate) - new Date();
+                    var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            %>
+                <div class="borrow-card" id="borrow-card-<%= item._id %>">
+                    <div class="borrow-cover-wrap">
+                        <% if (isOverdue) { %>
+                            <span class="badge-status overdue">Overdue</span>
+                        <% } else { %>
+                            <span class="badge-status active">Active</span>
+                        <% } %>
+
+                        <% if (book.bookImageURL) { %>
+                            <img src="<%= book.bookImageURL %>" alt="<%= book.title %> Cover" class="borrow-cover-img">
+                        <% } else { %>
+                            <div class="borrow-cover-fallback">
+                                <span class="fallback-icon">📖</span>
+                                <span class="fallback-title"><%= book.title || "Unknown Book" %></span>
+                            </div>
+                        <% } %>
+                    </div>
+
+                    <div class="borrow-content">
+                        <h3 class="borrow-title" title="<%= book.title || 'Deleted Catalog Item' %>"><%= book.title || 'Deleted Catalog Item' %></h3>
+                        <p class="borrow-author">by <%= book.author || 'Unknown' %></p>
+                        
+                        <div class="borrow-divider"></div>
+                        
+                        <div class="borrow-meta-list">
+                            <div class="borrow-meta-item">
+                                <span class="meta-label">ISBN:</span>
+                                <span class="meta-val" style="font-family: monospace;"><%= book.isbn || 'N/A' %></span>
+                            </div>
+                            <div class="borrow-meta-item">
+                                <span class="meta-label">Borrowed On:</span>
+                                <span class="meta-val"><%= new Date(item.borrowDate).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) %></span>
+                            </div>
+                            <div class="borrow-meta-item">
+                                <span class="meta-label">Expected Return:</span>
+                                <span class="meta-val"><%= new Date(item.returnDate).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) %></span>
+                            </div>
+                            <div class="borrow-meta-item">
+                                <span class="meta-label">Time Remaining:</span>
+                                <% if (isOverdue) { %>
+                                    <span class="meta-val highlight-red">Overdue by <%= Math.abs(diffDays) %> day(s)</span>
+                                <% } else { %>
+                                    <span class="meta-val highlight-green"><%= diffDays %> day(s) left</span>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="borrow-actions">
+                        <button class="btn-return" onclick="returnBorrowedBook('<%= item._id %>')">
+                            <svg style="width:16px; height:16px; fill:none; stroke:currentColor; stroke-width:2.5;" viewBox="0 0 24 24"><path d="M9 14L4 9l5-5"></path><path d="M20 20v-7a4 4 0 0 0-4-4H4"></path></svg>
+                            <span>Return Book</span>
+                        </button>
+                    </div>
+                </div>
+            <% }); } else { %>
+                <div class="blank-state">
+                    <div class="blank-state-icon">📖</div>
+                    <h3>No Active Borrows</h3>
+                    <p>You don't have any books currently borrowed from our collection.</p>
+                    <a href="/books" class="btn-browse-catalog">Browse Library Catalog</a>
+                </div>
+            <% } %>
+        </section>
+
+        <!-- Borrow History Section -->
+        <section class="borrow-grid" id="historySection" style="display: none;">
+            <% 
+            var historyBorrows = borrows.filter(b => b.status === "RETURNED");
+            if (historyBorrows.length > 0) { 
+                historyBorrows.forEach(function(item) { 
+                    var book = item.bookId || {};
+            %>
+                <div class="borrow-card">
+                    <div class="borrow-cover-wrap">
+                        <span class="badge-status returned">Returned</span>
+                        
+                        <% if (book.bookImageURL) { %>
+                            <img src="<%= book.bookImageURL %>" alt="<%= book.title %> Cover" class="borrow-cover-img">
+                        <% } else { %>
+                            <div class="borrow-cover-fallback">
+                                <span class="fallback-icon">📖</span>
+                                <span class="fallback-title"><%= book.title || "Unknown Book" %></span>
+                            </div>
+                        <% } %>
+                    </div>
+
+                    <div class="borrow-content">
+                        <h3 class="borrow-title" title="<%= book.title || 'Deleted Catalog Item' %>"><%= book.title || 'Deleted Catalog Item' %></h3>
+                        <p class="borrow-author">by <%= book.author || 'Unknown' %></p>
+                        
+                        <div class="borrow-divider"></div>
+                        
+                        <div class="borrow-meta-list">
+                            <div class="borrow-meta-item">
+                                <span class="meta-label">ISBN:</span>
+                                <span class="meta-val" style="font-family: monospace;"><%= book.isbn || 'N/A' %></span>
+                            </div>
+                            <div class="borrow-meta-item">
+                                <span class="meta-label">Borrowed On:</span>
+                                <span class="meta-val"><%= new Date(item.borrowDate).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) %></span>
+                            </div>
+                            <div class="borrow-meta-item">
+                                <span class="meta-label">Returned On:</span>
+                                <span class="meta-val"><%= new Date(item.updatedAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) %></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }); } else { %>
+                <div class="blank-state">
+                    <div class="blank-state-icon">⏳</div>
+                    <h3>No Return History</h3>
+                    <p>Your returned books log is currently empty.</p>
+                    <a href="/books" class="btn-browse-catalog">Browse Library Catalog</a>
+                </div>
+            <% } %>
+        </section>
+    </main>
+
+    <%- include('./partials/Footer') %>
+
+    <!-- Toast Notification Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        // Tab switching logic
+        function switchTab(tab) {
+            const btnBorrowed = document.getElementById("tabBorrowed");
+            const btnHistory = document.getElementById("tabHistory");
+            const borrowedSection = document.getElementById("borrowedSection");
+            const historySection = document.getElementById("historySection");
+
+            if (tab === 'borrowed') {
+                btnBorrowed.classList.add("active");
+                btnHistory.classList.remove("active");
+                borrowedSection.style.display = "grid";
+                historySection.style.display = "none";
+            } else {
+                btnBorrowed.classList.remove("active");
+                btnHistory.classList.add("active");
+                borrowedSection.style.display = "none";
+                historySection.style.display = "grid";
+            }
+        }
+
+        // Return a book
+        async function returnBorrowedBook(borrowId) {
+            if (!confirm("Are you sure you want to return this book?")) {
+                return;
+            }
+
+            try {
+                const response = await fetch("/borrow/api/return", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ borrowId: borrowId })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    showToast(data.message, "success");
+                    
+                    // Remove or modify card element dynamically
+                    const card = document.getElementById(`borrow-card-${borrowId}`);
+                    if (card) {
+                        card.style.opacity = "0";
+                        card.style.transform = "scale(0.9)";
+                        card.style.transition = "all 0.35s ease";
+                        setTimeout(() => {
+                            window.location.reload(); // Reload to refresh history and counts
+                        }, 500);
+                    } else {
+                        window.location.reload();
+                    }
+                } else {
+                    showToast(data.message || "Failed to return the book.", "error");
+                }
+            } catch (err) {
+                console.error("Return request failed:", err);
+                showToast("Connection error. Please try again.", "error");
+            }
+        }
+
+        // Toast notifications
+        function showToast(message, type = "success") {
+            const container = document.getElementById("toastContainer");
+            const toast = document.createElement("div");
+            toast.className = `toast toast-${type}`;
+            
+            let icon = "✔️";
+            if (type === "error") icon = "❌";
+            
+            toast.innerHTML = `
+                <span style="font-size: 18px;">${icon}</span>
+                <span>${message}</span>
+            `;
+            container.appendChild(toast);
+            
+            // Trigger reflow
+            toast.offsetHeight;
+            
+            toast.classList.add("show");
+            
+            setTimeout(() => {
+                toast.classList.remove("show");
+                setTimeout(() => {
+                    toast.remove();
+                }, 400);
+            }, 3500);
+        }
+    </script>
+</body>
+</html>

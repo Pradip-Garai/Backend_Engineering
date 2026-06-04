@@ -30,6 +30,14 @@ const userSchema = new Schema({
     isVarified:{
         type:Boolean,
         default:false
+    },
+    resetPasswordOTP:{
+        type:Number,
+        default: undefined
+    },
+    resetPasswordEmail:{
+        type:String,
+        default: undefined
     }
 },{timestamps:true});
 

@@ -143,52 +143,6 @@
             color: black;
         }
 
-        /* ─── STATS BAR ─────────────────────────────────────── */
-        .stats-bar {
-            background: #ffffff;
-            box-shadow: 0 4px 18px rgba(0,0,0,0.07);
-            padding: 28px 40px;
-        }
-
-        .stats-inner {
-            max-width: 900px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 28px;
-            font-weight: 800;
-            color: #7b1e3a;
-            line-height: 1;
-        }
-
-        .stat-label {
-            font-size: 13px;
-            color: #888;
-            margin-top: 4px;
-            font-weight: 500;
-        }
-
-        .stat-divider {
-            width: 1px;
-            height: 40px;
-            background: #e8e8e8;
-        }
-
-        @media (max-width: 600px) {
-            .hero { height: 420px; }
-            .stat-divider { display: none; }
-        }
-
         /* ─── CATEGORY SECTION ──────────────────────────────── */
         .category-section {
             background: #f4f6fb;
@@ -291,6 +245,547 @@
             .category-img-wrap .img-circle img { width: 95%; height: 95%; }
             .category-grid { gap: 14px; }
         }
+
+        /* ─── FEATURED BOOKS SECTION ─────────────────────── */
+        .featured-books-section {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            padding: 80px 40px;
+            margin-top: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .featured-books-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -200px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(123, 30, 58, 0.05) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .featured-books-section::after {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            left: -150px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(123, 30, 58, 0.03) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .featured-books-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .featured-books-section h2 {
+            font-size: 28px;
+            font-weight: 800;
+            color: #0f172a;
+            text-align: center;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        .featured-subtitle {
+            text-align: center;
+            color: #64748b;
+            font-size: 15px;
+            margin-bottom: 45px;
+            font-weight: 500;
+        }
+
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 28px;
+            padding: 0 10px;
+        }
+
+        .book-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+
+        .book-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #7b1e3a, #d63031, #f59e0b);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+            z-index: 10;
+        }
+
+        .book-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .book-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 32px rgba(123, 30, 58, 0.15);
+            border-color: #cbd5e1;
+        }
+
+        .book-image-wrapper {
+            position: relative;
+            width: 100%;
+            height: 280px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .book-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .book-card:hover .book-image {
+            transform: scale(1.08);
+        }
+
+        .category-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            text-transform: uppercase;
+            backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .book-info {
+            padding: 20px 18px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .book-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0f172a;
+            line-height: 1.4;
+            margin: 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .book-author {
+            font-size: 13px;
+            color: #64748b;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        .book-isbn {
+            font-size: 12px;
+            color: #94a3b8;
+            margin: 0;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 0.5px;
+        }
+
+        .book-availability {
+            margin-top: 10px;
+            padding-top: 12px;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .availability-badge {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+
+        .availability-badge.available {
+            color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .availability-badge.unavailable {
+            color: #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .book-action-btn {
+            background: #7b1e3a;
+            color: white;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: auto;
+            margin-top: 16px;
+        }
+
+        .book-action-btn svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2.2;
+        }
+
+        .book-action-btn:hover {
+            background: #9c284e;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(123, 30, 58, 0.3);
+        }
+
+        .book-action-btn:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .featured-books-section {
+                padding: 40px 20px;
+            }
+
+            .books-grid {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+                gap: 20px;
+            }
+
+            .featured-books-section h2 {
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .featured-books-section {
+                padding: 30px 16px;
+            }
+
+            .books-grid {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+                gap: 16px;
+                padding: 0;
+            }
+
+            .book-image-wrapper {
+                height: 220px;
+            }
+
+            .book-info {
+                padding: 14px 12px;
+                gap: 4px;
+            }
+
+            .featured-books-section h2 {
+                font-size: 20px;
+            }
+
+            .featured-subtitle {
+                font-size: 14px;
+            }
+        }
+
+        /* ─── SERVICES SECTION ───────────────────────────── */
+        .services-section {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            padding: 100px 40px;
+            margin-top: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .services-section::before {
+            content: '';
+            position: absolute;
+            top: -300px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(123, 30, 58, 0.06) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .services-section h2 {
+            font-size: 32px;
+            font-weight: 800;
+            color: #0f172a;
+            text-align: center;
+            margin-bottom: 60px;
+            letter-spacing: -0.5px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px 35px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(123, 30, 58, 0.08) 0%, transparent 70%);
+            transition: transform 0.4s ease;
+            transform: translate(50%, 50%);
+        }
+
+        .service-card:hover::before {
+            transform: translate(0, 0);
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(123, 30, 58, 0.15);
+            border-color: #cbd5e1;
+        }
+
+        .service-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-icon {
+            font-size: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(123, 30, 58, 0.15) 0%, rgba(123, 30, 58, 0.05) 100%);
+        }
+
+        .service-header h3 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #0f172a;
+            margin: 0;
+            line-height: 1.3;
+        }
+
+        .service-description {
+            font-size: 15px;
+            color: #475569;
+            line-height: 1.6;
+            margin-bottom: 24px;
+            font-weight: 500;
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-features {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 32px 0;
+            flex-grow: 1;
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-features li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            color: #334155;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .service-features li:not(:last-child) {
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .checkmark {
+            width: 20px;
+            height: 20px;
+            stroke: #10b981;
+            stroke-width: 3;
+            fill: none;
+            flex-shrink: 0;
+        }
+
+        /* Service Buttons */
+        .service-btn {
+            padding: 14px 24px;
+            font-size: 15px;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            transition: all 0.3s ease;
+            color: #ffffff;
+            position: relative;
+            z-index: 2;
+        }
+
+        .borrowing-btn {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+        }
+
+        .borrowing-btn:hover {
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .tracking-btn {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        .tracking-btn:hover {
+            background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .services-section {
+                padding: 60px 20px;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .services-section h2 {
+                font-size: 26px;
+                margin-bottom: 40px;
+            }
+
+            .service-card {
+                padding: 30px 25px;
+            }
+
+            .service-header h3 {
+                font-size: 18px;
+            }
+
+            .service-features li {
+                padding: 10px 0;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .services-section {
+                padding: 40px 16px;
+            }
+
+            .services-section h2 {
+                font-size: 22px;
+                margin-bottom: 30px;
+            }
+
+            .service-card {
+                padding: 24px 18px;
+            }
+
+            .service-header {
+                gap: 12px;
+            }
+
+            .service-icon {
+                min-width: 48px;
+                height: 48px;
+                font-size: 28px;
+            }
+
+            .service-header h3 {
+                font-size: 16px;
+            }
+
+            .service-description {
+                font-size: 14px;
+                margin-bottom: 16px;
+            }
+
+            .service-features {
+                margin-bottom: 20px;
+            }
+
+            .service-features li {
+                padding: 8px 0;
+                font-size: 13px;
+            }
+
+            .service-btn {
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -316,7 +811,7 @@
 
             <div class="hero-actions">
                 <a href="/books" class="btn-primary-hero">Explore All Books</a>
-                <a href="/dashboard" class="btn-outline-hero">My Books</a>
+                <a href="/my-books" class="btn-outline-hero">My Books</a>
             </div>
         </div>
     </section>
@@ -397,6 +892,118 @@
                 </div>
                 <span class="category-label" style="color:#e17055;">Stories</span>
             </a>
+        </div>
+    </section>
+
+    <!-- ─── FEATURED BOOKS SECTION ─────────────────────────── -->
+    <section class="featured-books-section">
+        <div class="featured-books-container">
+            <h2>Discover Our Collection</h2>
+            <p class="featured-subtitle">Explore 15 handpicked books from our diverse collection</p>
+            
+            <div class="books-grid">
+                <% if (randomBooks && randomBooks.length > 0) { %>
+                    <% randomBooks.forEach(function(book) { 
+                        let categoryColor = '#6366f1';
+                        if (book.catagory === 'Science') categoryColor = '#0984e3';
+                        else if (book.catagory === 'Technology') categoryColor = '#00b894';
+                        else if (book.catagory === 'Mathematics') categoryColor = '#fdcb6e';
+                        else if (book.catagory === 'Literature') categoryColor = '#d63031';
+                        else if (book.catagory === 'History') categoryColor = '#6c5ce7';
+                        else if (book.catagory === 'Business') categoryColor = '#e84393';
+                        else if (book.catagory === 'Computers') categoryColor = '#00cec9';
+                        else if (book.catagory === 'Stories') categoryColor = '#e17055';
+                    %>
+                        <div class="book-card">
+                            <div class="book-image-wrapper">
+                                <img src="<%= book.bookImageURL %>" alt="<%= book.title %>" class="book-image">
+                                <span class="category-badge" style="background-color: <%= categoryColor %>;">
+                                    <%= book.catagory.toUpperCase() %>
+                                </span>
+                            </div>
+                            <div class="book-info">
+                                <h3 class="book-title"><%= book.title %></h3>
+                                <p class="book-author">by <%= book.author %></p>
+                                <p class="book-isbn"><%= book.isbn %></p>
+                                <div class="book-availability">
+                                    <% if (book.availableCopies > 0) { %>
+                                        <span class="availability-badge available">● <%= book.availableCopies %> left</span>
+                                    <% } else { %>
+                                        <span class="availability-badge unavailable">● Out of stock</span>
+                                    <% } %>
+                                </div>
+                            </div>
+                            <button class="book-action-btn" onclick="window.location.href='/books'">
+                                <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                Show
+                            </button>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <p style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #888;">No books available at the moment</p>
+                <% } %>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── SERVICES SECTION ─────────────────────────────── -->
+    <section class="services-section">
+        <h2>Explore Our Library Services</h2>
+        
+        <div class="services-grid">
+            <!-- Card 1: Borrowing System -->
+            <div class="service-card borrowing-card">
+                <div class="service-header">
+                    <span class="service-icon">📚</span>
+                    <h3>Unlimited Book Borrowing</h3>
+                </div>
+                
+                <p class="service-description">Borrow books from our extensive collection with flexible lending periods</p>
+                
+                <ul class="service-features">
+                    <li>
+                        <svg viewBox="0 0 24 24" class="checkmark"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        <span>Access to thousands of books</span>
+                    </li>
+                    <li>
+                        <svg viewBox="0 0 24 24" class="checkmark"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        <span>Extended borrowing periods</span>
+                    </li>
+                    <li>
+                        <svg viewBox="0 0 24 24" class="checkmark"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        <span>Easy book renewal system</span>
+                    </li>
+                </ul>
+                
+                <a href="/books" class="service-btn borrowing-btn">Browse Library Collection</a>
+            </div>
+
+            <!-- Card 2: Reading Journey Tracking -->
+            <div class="service-card tracking-card">
+                <div class="service-header">
+                    <span class="service-icon">📊</span>
+                    <h3>Track Your Reading Journey</h3>
+                </div>
+                
+                <p class="service-description">Monitor and manage your reading activity with our smart tracking system</p>
+                
+                <ul class="service-features">
+                    <li>
+                        <svg viewBox="0 0 24 24" class="checkmark"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        <span>View your borrowing history</span>
+                    </li>
+                    <li>
+                        <svg viewBox="0 0 24 24" class="checkmark"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        <span>Rate and review books</span>
+                    </li>
+                    <li>
+                        <svg viewBox="0 0 24 24" class="checkmark"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        <span>Get genre-based recommendations</span>
+                    </li>
+                </ul>
+                
+                <a href="/my-books" class="service-btn tracking-btn">View Your Books</a>
+            </div>
         </div>
     </section>
 

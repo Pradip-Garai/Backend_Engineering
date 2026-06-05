@@ -5,7 +5,8 @@ const booksSchema = new Schema({
 
     title:{
         type:String,
-        required:true
+        required:true,
+        minlength:3,
     },
     author:{
         type:String,
@@ -40,4 +41,4 @@ const booksSchema = new Schema({
 
 const Books = mongoose.model("books",booksSchema);
 
-export default Books;
+export default Books; 
